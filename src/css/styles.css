@@ -1,0 +1,392 @@
+/*
+ * Copyright (C) 2026 Vitor Faustino
+ * Licensed under the GNU Affero General Public License v3.0.
+ * This software is provided "as is", without any warranty of any kind.
+ * The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+ * to the fullest extent permitted by law.
+ * See the GNU Affero General Public License for details.
+ */
+
+/**
+ * ARQUIVO CSS UNIFICADO
+ * ===================
+ * Este arquivo contém todos os estilos da aplicação Busca Empresas
+ * Consolidado para evitar conflitos e duplicações
+ */
+
+/**
+ * PALETA DE CORES PRINCIPAL
+ * =======================
+ * Defina aqui as cores base que serão usadas em toda a aplicação.
+ */
+:root {
+    /* Cores principais da marca */
+    --brand-primary: #7F55C4;      /* Cor principal da marca (azul) */
+    --brand-primary-light: #7F55C4; /* Versão mais clara */
+    --brand-primary-dark: #A278E5;  /* Versão mais escura */
+    
+    /* Tons de cinza para o tema escuro */
+    --dark-bg-primary: #1F2937;    /* Fundo primário no tema escuro */
+    --dark-bg-secondary: #111827;  /* Fundo secundário no tema escuro */
+    --dark-border: #374151;        /* Bordas no tema escuro */
+    --dark-text-primary: #F3F4F6;  /* Texto principal no tema escuro */
+    --dark-text-secondary: #D1D5DB; /* Texto secundário no tema escuro */
+    
+    /* Tons de cinza para o tema claro */
+    --light-bg-primary: #FFFFFF;   /* Fundo primário no tema claro */
+    --light-bg-secondary: #F3F4F6; /* Fundo secundário no tema claro */
+    --light-border: #E5E7EB;       /* Bordas no tema claro */
+    --light-text-primary: #1F2937; /* Texto principal no tema claro */
+    --light-text-secondary: #4B5563; /* Texto secundário no tema claro */
+    
+    /* Cores de feedback */
+    --success: #10B981;           /* Sucesso */
+    --success-dark: #059669;      /* Sucesso (hover) */
+    --warning: #F59E0B;           /* Alerta */
+    --warning-dark: #D97706;      /* Alerta (hover) */
+    --error: #EF4444;             /* Erro */
+    --error-dark: #DC2626;        /* Erro (hover) */
+    --info: #3B82F6;              /* Informação */
+    --info-dark: #2563EB;         /* Informação (hover) */
+}
+
+/**
+ * TEMA ESCURO (Padrão)
+ * ==================
+ */
+:root, [data-theme="dark"] {
+    /* Cores principais */
+    --primary-color: #1F2531;
+    --accent-color: var(--brand-primary);
+    --accent-hover: var(--brand-primary-dark);
+    
+    /* Texto */
+    --text-primary: var(--dark-text-primary);
+    --text-secondary: var(--dark-text-secondary);
+    
+    /* Fundos */
+    --bg-primary: var(--dark-bg-primary);
+    --bg-secondary: var(--dark-bg-secondary);
+    --border-color: var(--dark-border);
+    
+    /* Cores de feedback */
+    --success-color: var(--success);
+    --success-hover: var(--success-dark);
+    --warning-color: var(--warning);
+    --warning-hover: var(--warning-dark);
+    --error-color: var(--error);
+    --error-hover: var(--error-dark);
+    --info-color: var(--info);
+    --info-hover: var(--info-dark);
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/**
+ * TEMA CLARO
+ * =========
+ */
+[data-theme="light"] {
+    /* Cores principais */
+    --primary-color: #F9FAFB;
+    --accent-color: var(--brand-primary);
+    --accent-hover: var(--brand-primary-dark);
+    
+    /* Texto */
+    --text-primary: var(--light-text-primary);
+    --text-secondary: var(--light-text-secondary);
+    
+    /* Fundos */
+    --bg-primary: var(--light-bg-primary);
+    --bg-secondary: var(--light-bg-secondary);
+    --border-color: var(--light-border);
+    
+    /* Cores de feedback */
+    --success-color: var(--success);
+    --success-hover: var(--success-dark);
+    --warning-color: var(--warning);
+    --warning-hover: var(--warning-dark);
+    --error-color: var(--error);
+    --error-hover: var(--error-dark);
+    --info-color: var(--info);
+    --info-hover: var(--info-dark);
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* ====== ESTILOS BASE ====== */
+
+body {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cards */
+.card {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* ====== BOTÕES ====== */
+
+.btn-primary {
+    background-color: var(--brand-primary) !important;
+    color: white !important;
+    transition: background-color 0.3s, transform 0.2s !important;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-primary-dark) !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-secondary {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    transition: background-color 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-primary) !important;
+}
+
+/* ====== COMPONENTES ====== */
+
+/* Barra de carregamento */
+.loading-bar {
+    width: 0%;
+    height: 0.25rem;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+/* Mapa */
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.gm-style .place-card {
+    display: none !important;
+}
+
+/* ====== AUTOCOMPLETE GOOGLE PLACES ====== */
+
+/* Estilos para o campo de localização e autocomplete */
+.pac-container {
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0.5rem !important;
+    margin-top: 4px !important;
+    box-shadow: var(--shadow-md) !important;
+    font-family: inherit !important;
+    z-index: 9999 !important;
+    color: var(--text-primary) !important;
+}
+
+.pac-item {
+    padding: 10px 12px !important;
+    color: var(--text-primary) !important;
+    border-top: 1px solid var(--border-color) !important;
+    cursor: pointer !important;
+    background-color: var(--bg-secondary) !important;
+    transition: background-color 0.2s ease;
+}
+
+.pac-item:first-child {
+    border-top: none !important;
+}
+
+.pac-item:hover {
+    background-color: var(--bg-secondary) !important;
+}
+
+.pac-item-selected {
+    background-color: var(--bg-secondary) !important;
+}
+
+.pac-item-query {
+    color: var(--text-primary) !important;
+    font-size: 14px !important;
+}
+
+.pac-matched {
+    color: var(--accent-color) !important;
+    font-weight: 500 !important;
+}
+
+.pac-icon {
+    filter: invert(0.8) !important;
+    margin-right: 8px !important;
+}
+
+/* ====== FORMULÁRIOS ====== */
+
+/* Estilos para inputs */
+input[type="text"],
+input[type="search"],
+select,
+textarea {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0.375rem !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: border-color 0.3s ease !important;
+}
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent-color) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Placeholder */
+::placeholder {
+    color: var(--text-secondary) !important;
+    opacity: 0.7 !important;
+}
+
+/* ====== MODAL ====== */
+
+.modal {
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background-color: var(--bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-lg);
+}
+
+/* ====== UTILITÁRIOS ====== */
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.bg-accent {
+    background-color: var(--accent-color) !important;
+}
+
+.border-accent {
+    border-color: var(--accent-color) !important;
+}
+
+/* ====== ESTILOS ESPECÍFICOS ====== */
+
+/* API Key */
+.api-key-valid {
+    border-color: var(--success-color) !important;
+}
+
+.api-key-invalid {
+    border-color: var(--error-color) !important;
+}
+
+.api-key-validated {
+    background-color: var(--success-color) !important;
+}
+
+/* Resultados */
+/* Estilo para itens da lista */
+.result-item {
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-item:hover {
+    border-left-color: var(--accent-color);
+    background-color: rgba(139, 92, 246, 0.05);
+}
+
+/* Estilo para cards da grade */
+.grid-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de destaque para itens prospectados */
+.result-item.prospected-item {
+    border-left-color: var(--accent-color);
+    background-color: rgba(139, 92, 246, 0.08);
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3);
+}
+
+.grid-card.prospected-item {
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Efeito sutil de elevação ao passar o mouse */
+.grid-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.prospected-badge {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Notas */
+.note-item {
+    background-color: var(--bg-secondary);
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.note-date {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}

@@ -1,0 +1,92 @@
+/*
+ * Copyright (C) 2026 Vitor Faustino
+ * Licensed under the GNU Affero General Public License v3.0.
+ * This software is provided "as is", without any warranty of any kind.
+ * The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+ * to the fullest extent permitted by law.
+ * See the GNU Affero General Public License for details.
+ */
+
+/* Estilos para corrigir a visualização em grid */
+
+.grid-card {
+    background-color: var(--bg-secondary);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    padding: 1rem;
+}
+
+.grid-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    border-color: var(--brand-primary);
+}
+
+.grid-card-header {
+    margin-bottom: 1rem;
+}
+
+.grid-card-body {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.grid-card-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+/* Estilo para o container de grid */
+#gridView {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    #gridView {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    #gridView {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para o botão de paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0.25rem;
+}
+
+.page-btn {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s ease;
+}
+
+.page-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.page-btn.active {
+    background-color: var(--brand-primary);
+    color: white;
+}

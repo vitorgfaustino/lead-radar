@@ -1,0 +1,1862 @@
+<!--
+Copyright (C) 2026 Vitor Faustino
+Licensed under the GNU Affero General Public License v3.0.
+This software is provided "as is", without any warranty of any kind.
+The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+to the fullest extent permitted by law.
+See the GNU Affero General Public License for details.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta name="Baiduspider" content="noindex, nofollow">
+    <meta name="YandexBot" content="noindex, nofollow">
+    <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, unavailable_after: 1-Jan-2000 00:00:00 GMT">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://maps.googleapis.com https://maps.gstatic.com https://*.googleapis.com 'unsafe-inline'; style-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://maps.googleapis.com https://maps.gstatic.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self' https://maps.googleapis.com https://maps.gstatic.com https://*.googleapis.com https://places.googleapis.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <title>Busca Empresas - Extrator de Dados</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Preconnect para CDNs críticos -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://maps.googleapis.com">
+    <link rel="preconnect" href="https://maps.gstatic.com">
+    
+    <!-- Tailwind CSS de Produção -->
+    <script src="src/js/tailwind-config.js?v=1.0.0"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <!-- Font Awesome e Material Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- CSS unificado -->
+    <link rel="stylesheet" href="src/css/styles.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/grid-fix.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/lead-status-colors.css?v=1.0.0">
+    <!-- Design System Moderno -->
+    <link rel="stylesheet" href="src/css/design-system.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/premium-redesign.css?v=1.0.0">
+
+</head>
+<body class="min-h-screen dark flex flex-col bg-bg-secondary setup-locked" data-page-view="radar">
+    <div data-global-header></div>
+
+    <div id="onboardingGate" class="fixed inset-0 z-[80] overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
+        <section class="mx-auto w-full max-w-[88rem] border border-white/10 bg-slate-950/95 p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] md:p-8 lg:p-10">
+            <div class="grid gap-8 lg:grid-cols-[0.98fr_1.02fr] lg:items-start">
+                <div>
+                    <span class="section-kicker">
+                        <span class="material-icons" style="font-size:18px">lock</span>
+                        Instalação local protegida
+                    </span>
+                    <h1 class="hero-title !text-4xl md:!text-5xl mt-4">Libere o Radar com sua <span>chave do Google Places.</span></h1>
+                    <p class="hero-copy !mt-4">Esta instalação continua 100% local. Você pode iniciar com uma nova chave, restaurar um backup seguro ou desbloquear um ambiente já existente neste navegador.</p>
+
+                    <div class="grid gap-3 mt-6 md:grid-cols-2">
+                        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                            <p class="text-sm font-semibold text-white">Primeiro uso</p>
+                            <p class="text-sm text-slate-400 mt-2">Valide a chave, escolha a senha local e libere as buscas com cofre protegido.</p>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                            <p class="text-sm font-semibold text-white">Recuperação segura</p>
+                            <p class="text-sm text-slate-400 mt-2">Restaure um snapshot criptografado ou reabra dados já vinculados a esta instalação.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                        <p class="text-sm font-semibold text-white">Precisa criar a chave API?</p>
+                        <p class="mt-2 text-sm text-slate-400">Abra a ajuda com o passo a passo para gerar a chave no Google Cloud.</p>
+                        <a href="ajuda.html#api" class="mt-3 inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-2.5 text-sm font-medium text-cyan-100 transition-colors hover:border-cyan-300 hover:bg-cyan-400/15">
+                            <span class="material-icons" style="font-size:18px">help</span>
+                            Ver como criar a chave API
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-black/20 p-5 md:p-6">
+                    <div class="flex flex-wrap gap-2 rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-2">
+                        <button id="onboardingNewUseTab" type="button" data-onboarding-tab="new" class="btn-secondary inline-flex min-h-[44px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition-colors">
+                            Primeiro uso
+                        </button>
+                        <button id="onboardingRestoreTab" type="button" data-onboarding-tab="restore" class="btn-secondary inline-flex min-h-[44px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition-colors">
+                            Restaurar backup
+                        </button>
+                        <button id="onboardingUnlockTab" type="button" data-onboarding-tab="unlock" class="hidden btn-secondary inline-flex min-h-[44px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium transition-colors">
+                            Desbloquear
+                        </button>
+                    </div>
+
+                    <div id="onboardingStatus" class="mt-4 text-sm rounded-xl px-4 py-3 border border-white/10 bg-slate-700/60 text-slate-200">
+                        Escolha como deseja liberar esta instalação local.
+                    </div>
+
+                    <div class="mt-5 space-y-4">
+                        <div data-onboarding-panel="new" class="space-y-4">
+                            <div>
+                                <label for="onboardingNewApiKey" class="block text-sm font-medium text-slate-200 mb-2">Chave API do Google Places</label>
+                                <input id="onboardingNewApiKey" type="password" placeholder="Cole a chave que começa com AIza..." class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                            </div>
+                            <div>
+                                <label for="onboardingNewPin" class="block text-sm font-medium text-slate-200 mb-2">Senha local da instalação</label>
+                                <input id="onboardingNewPin" type="password" placeholder="4 a 12 caracteres" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                                <p class="mt-2 text-xs text-slate-400">Essa senha protege o cofre da API, os backups seguros e o desbloqueio futuro nesta mesma instalação.</p>
+                            </div>
+                            <button id="onboardingNewSubmit" type="button" class="btn-secondary w-full rounded-2xl px-4 py-3.5 font-semibold transition-colors">
+                                Validar chave e começar
+                            </button>
+                        </div>
+
+                        <div data-onboarding-panel="restore" class="hidden space-y-4">
+                            <div>
+                                <label for="onboardingRestoreFile" class="block text-sm font-medium text-slate-200 mb-2">Arquivo de backup</label>
+                                <input id="onboardingRestoreFile" type="file" accept=".json" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-sm text-slate-300 file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-4 file:py-2.5 file:font-semibold file:text-slate-100">
+                            </div>
+                            <div>
+                                <label for="onboardingRestorePin" class="block text-sm font-medium text-slate-200 mb-2">Senha do backup</label>
+                                <input id="onboardingRestorePin" type="password" placeholder="Use a mesma senha usada na exportação" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                            </div>
+                            <button id="onboardingRestoreSubmit" type="button" class="btn-secondary w-full rounded-2xl px-4 py-3.5 font-semibold transition-colors">
+                                Restaurar backup local
+                            </button>
+                        </div>
+
+                        <div data-onboarding-panel="unlock" class="hidden space-y-4">
+                            <div>
+                                <label for="onboardingUnlockPin" class="block text-sm font-medium text-slate-200 mb-2">Senha da instalação</label>
+                                <input id="onboardingUnlockPin" type="password" placeholder="Digite sua senha para reabrir esta instalação" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                            </div>
+                            <button id="onboardingUnlockSubmit" type="button" class="btn-secondary w-full rounded-2xl px-4 py-3.5 font-semibold transition-colors">
+                                Desbloquear instalação
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="apiKeyModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 sm:p-6 z-[60] hidden">
+        <div class="modal-background rounded-3xl shadow-2xl max-w-2xl w-full elevation-3 border border-white/10 overflow-hidden">
+            <div class="flex justify-between items-start gap-4 border-b border-white/10 px-6 py-5 bg-slate-950/60 backdrop-blur-sm">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.24em] text-slate-300/80 mb-2">Conexão local protegida</p>
+                    <h3 class="text-xl font-semibold flex items-center text-white">
+                        <span class="material-icons mr-2 text-slate-200">vpn_key</span>
+                        Conectar ou atualizar API
+                    </h3>
+                    <p class="mt-2 text-sm text-slate-400 max-w-2xl">Valide, destrave ou troque a chave do Google Places sem sair do Radar.</p>
+                </div>
+                <button id="closeApiKeyModalBtn" type="button" class="text-slate-400 hover:text-white transition-colors" aria-label="Fechar modal da API">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="mb-6">
+                    <div class="flex items-center mb-1">
+                        <label for="apiKey" class="block text-sm font-medium">Chave API usada para buscar empresas</label>
+                        <div class="tooltip ml-2">
+                            <i class="fas fa-info-circle text-accent cursor-pointer"></i>
+                            <span class="tooltip-text text-sm">
+                                <strong>Requisitos da Chave API:</strong><br>
+                                Sua chave deve ter as seguintes APIs habilitadas:<br><br>
+                                - Places API<br>
+                                - Places API NEW<br>
+                                - Geocoding API<br>
+                                - Maps JavaScript API
+                            </span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="flex gap-2">
+                            <input type="password" id="apiKey" placeholder="Cole sua chave API (começa com AIza...)" title="Cole aqui a chave criada no Google Cloud para liberar as buscas." class="w-full px-4 py-3 border-2 border-gray-600 rounded-l-lg focus:ring-2 focus:ring-accent focus:border-accent bg-bg-primary">
+                            <div class="flex gap-2">
+                                <button id="clearKeyBtn" type="button" class="btn-secondary font-medium rounded-none text-sm px-4 py-3 border-2 border-gray-600 hover:bg-gray-700">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button id="validateKeyBtn" type="button" class="btn-primary font-medium rounded-r-lg text-sm px-6 py-3 validate-btn">
+                                    Validar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="keyValidationResult" class="mt-2 text-sm hidden">
+                        <div class="flex items-center">
+                            <span id="validationIcon" class="mr-2"></span>
+                            <span id="validationMessage"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-gray-600">
+                        <a href="https://alpes.me/9ag41s" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 hover:opacity-80 transition-opacity duration-200">
+                            <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            <span class="font-medium text-white">Como criar sua Chave API</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-[88rem]">
+
+        <!-- Seção de Configuração da Pesquisa -->
+        <section class="card crm-search-card p-6 mb-8 elevation-2">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">
+                        <span class="material-icons" style="font-size:18px">tune</span>
+                        Defina sua busca
+                    </span>
+                    <h2 class="section-title">Radar de empresas</h2>
+                    <p class="section-description">Escolha o segmento, a região e o volume da coleta. Depois aplique filtros para destacar empresas com melhor chance de contato.</p>
+                </div>
+                <span class="status-pill">
+                    <span class="material-icons" style="font-size:16px">bolt</span>
+                    Busca em tempo real
+                </span>
+            </div>
+
+            <div class="crm-search-layout">
+                <div>
+                    <div class="field-grid">
+                        <div class="premium-field">
+                            <label for="searchTerm">
+                                <span class="material-icons">category</span>
+                                O que você quer encontrar
+                            </label>
+                            <input type="text" id="searchTerm" placeholder="Ex.: restaurantes, clínicas, hotéis, lojas..." title="Digite o tipo de empresa ou serviço que você quer encontrar."
+                                   class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-accent focus:border-accent bg-bg-primary">
+                        </div>
+
+                        <div class="premium-field">
+                            <label for="location">
+                                <span class="material-icons">pin_drop</span>
+                                Onde buscar
+                            </label>
+                            <div class="location-autocomplete" id="locationAutocomplete">
+                                <input type="text" id="location" placeholder="Ex.: São Paulo, SP ou latitude/longitude" title="Informe a cidade, bairro, endereço ou coordenadas centrais da busca."
+                                       autocomplete="off" spellcheck="false"
+                                       class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-accent focus:border-accent bg-bg-primary">
+                                <div id="locationSuggestions" class="location-autocomplete-menu" hidden></div>
+                            </div>
+                        </div>
+
+                        <div class="premium-field">
+                            <label for="radius">
+                                <span class="material-icons">radar</span>
+                                Distância da busca
+                            </label>
+                            <select id="radius" title="Define até onde o sistema deve procurar empresas a partir do ponto informado." class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-accent focus:border-accent bg-bg-primary">
+                                <option value="500">500m</option>
+                                <option value="1000" selected>1km</option>
+                                <option value="2000">2km</option>
+                                <option value="5000">5km</option>
+                                <option value="10000">10km</option>
+                                <option value="20000">20km</option>
+                                <option value="50000">50km</option>
+                            </select>
+                        </div>
+
+                        <div class="premium-field">
+                            <label for="maxResults">
+                                <span class="material-icons">dataset</span>
+                                Quantidade desejada
+                            </label>
+                            <select id="maxResults" title="Escolha quantas fichas pretende coletar nesta busca. Mais fichas podem gerar mais custo de API." class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-accent focus:border-accent bg-bg-primary">
+                                <option value="1">1 ficha</option>
+                                <option value="10">10 fichas</option>
+                                <option value="20">20 fichas</option>
+                                <option value="50" selected>50 fichas</option>
+                                <option value="60">60 fichas</option>
+                                <option value="100">100 fichas</option>
+                                <option value="200">200 fichas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-rail">
+                        <div class="flex items-center justify-between gap-3 flex-wrap mb-3">
+                            <h3 class="text-sm font-semibold flex items-center">
+                                <span class="material-icons mr-2">filter_alt</span>
+                                Filtros rápidos de prioridade
+                            </h3>
+                            <span class="text-xs text-gray-400">Ajuste sem refazer a busca</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <div class="filter-chip rounded-full px-3 py-1 text-sm cursor-pointer" data-filter="rating" data-value="4" title="Mostra primeiro empresas com avaliação igual ou maior que 4 estrelas.">
+                                <i class="fas fa-star mr-1"></i> 4+ estrelas
+                            </div>
+                            <div class="filter-chip rounded-full px-3 py-1 text-sm cursor-pointer" data-filter="hasWebsite" title="Destaca empresas com site próprio, útil para contato e análise comercial.">
+                                <i class="fas fa-globe mr-1"></i> Com website
+                            </div>
+                            <div class="filter-chip rounded-full px-3 py-1 text-sm cursor-pointer" data-filter="noWebsite" style="--chip-active-color: #0891b2;" title="Mostra empresas sem site, geralmente boas candidatas para oferta de presença digital.">
+                                <i class="fas fa-globe-americas mr-1"></i> Sem website
+                            </div>
+                            <div class="filter-chip rounded-full px-3 py-1 text-sm cursor-pointer" data-filter="hasPhone" title="Exibe empresas com telefone disponível para contato rápido.">
+                                <i class="fas fa-phone mr-1"></i> Com telefone
+                            </div>
+                            <div class="filter-chip rounded-full px-3 py-1 text-sm cursor-pointer" data-filter="manyReviews" data-value="50" title="Prioriza empresas com mais volume de avaliações, um sinal de operação ativa.">
+                                <i class="fas fa-comments mr-1"></i> 50+ avaliações
+                            </div>
+                            <div class="tooltip">
+                                <div class="filter-chip rounded-full px-3 py-1 text-sm cursor-pointer" data-filter="hasImage">
+                                    <i class="fas fa-image mr-1"></i> Com foto
+                                    <i class="fas fa-info-circle ml-1 text-gray-400"></i>
+                                </div>
+                                <span class="tooltip-text text-sm bg-red-900 border border-red-700">
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                                    <strong>Atenção</strong>: Obter imagens terá um custo extra nas solicitações API. <strong>É necessário extrair dados novamente após selecionado.</strong>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-submit-row">
+                        <button id="startSearchBtn" class="btn-primary w-full font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                            <span class="material-icons mr-2">travel_explore</span>
+                            Buscar empresas agora
+                        </button>
+                    </div>
+
+                    <div id="mapContainer" class="mt-5 hidden">
+                        <h3 class="text-sm font-semibold mb-2 flex items-center">
+                            <span class="material-icons mr-2">map</span>
+                            Área pesquisada
+                        </h3>
+                        <div id="map"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Seção de Resultados -->
+        <section class="card results-card p-6 elevation-2">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">
+                        <span class="material-icons" style="font-size:18px">leaderboard</span>
+                        Resultado da busca
+                    </span>
+                    <h2 class="section-title">Leads encontrados</h2>
+                    <p class="section-description">Abra os detalhes de cada empresa, marque as abordadas, registre notas e exporte sua base quando precisar.</p>
+                </div>
+                <span id="resultCount" class="text-sm bg-gray-700 px-3 py-2 rounded">0 resultados</span>
+            </div>
+
+            <div class="results-toolbar">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <button id="listViewBtn" class="view-btn active flex items-center justify-center w-10 h-10 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" title="Visualização em Lista" onclick="toggleView('list'); return false;">
+                        <span class="material-icons text-xl">view_list</span>
+                        <span class="sr-only">Lista</span>
+                    </button>
+                    <button id="gridViewBtn" class="view-btn flex items-center justify-center w-10 h-10 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" title="Visualização em Grid" onclick="toggleView('grid'); return false;">
+                        <span class="material-icons text-xl">grid_view</span>
+                        <span class="sr-only">Grid</span>
+                    </button>
+                    <div class="h-6 w-px bg-gray-600"></div>
+                    <button id="hideProspectedBtn" class="hide-prospected btn-secondary flex items-center px-3 h-10 rounded-lg transition-colors text-sm" title="Oculta da lista as empresas que você já marcou como trabalhadas.">
+                        <span class="material-icons text-lg mr-1">visibility_off</span>
+                        <span>Ocultar prospectadas</span>
+                    </button>
+                </div>
+
+                <button id="downloadBtn" class="download-btn btn-secondary text-sm font-medium py-1 px-3 rounded-lg transition duration-200 flex items-center" title="Exporta os resultados atuais para compartilhar ou analisar fora da ferramenta.">
+                    <span class="material-icons text-base">download</span>
+                    <span class="ml-1 hidden sm:inline">Exportar</span>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full bg-accent loading-bar"></div>
+                </div>
+                <div id="progressText" class="text-right text-xs mt-1 text-gray-400">0% concluído</div>
+            </div>
+            
+            <div id="loadingIndicator" class="hidden p-6 text-center">
+                <div class="animate-pulse flex flex-col items-center justify-center">
+                    <div class="h-16 w-16 rounded-full bg-accent opacity-20 mb-4"></div>
+                    <div class="h-4 w-1/3 mb-2 rounded bg-gray-700"></div>
+                    <div class="h-3 w-1/4 rounded bg-gray-700"></div>
+                </div>
+            </div>
+            
+            <div id="resultsContainer" class="border border-gray-600 rounded-lg overflow-hidden">
+                <div id="listView" class="list-view divide-y divide-gray-700"></div>
+                <div id="gridView" class="grid-view p-4 hidden"></div>
+            </div>
+            
+            <div id="errorContainer" class="mt-4 hidden">
+                <div class="bg-red-900 bg-opacity-20 border-l-4 border-red-400 p-4 rounded-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 id="errorTitle" class="text-sm font-medium text-red-200"></h3>
+                            <div id="errorDetails" class="mt-2 text-sm text-red-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modal de Detalhes -->
+        <div id="detailsModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="modal-background rounded-lg shadow-xl max-w-4xl w-full elevation-3">
+                <div class="flex justify-between items-center border-b border-gray-600 px-6 py-4">
+                    <div>
+                        <span class="section-kicker">
+                            <span class="material-icons" style="font-size:18px">business_center</span>
+                            Workspace do lead
+                        </span>
+                        <h3 id="modalTitle" class="text-lg font-semibold mt-1"></h3>
+                    </div>
+                    <button id="closeModalBtn" class="text-gray-500 hover:text-gray-300">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                    <!-- Coluna da esquerda: Informações do lead -->
+                    <div class="space-y-6">
+                        <div id="modalContent">
+                            <!-- Conteúdo será preenchido dinamicamente -->
+                        </div>
+                    </div>
+                    
+                    <!-- Coluna da direita: Gestão do lead -->
+                    <div class="space-y-6 border-l border-gray-700 pl-6">
+                        <!-- Status do Lead -->
+                        <div>
+                            <h4 class="font-semibold mb-3 text-accent">Qualificação</h4>
+                            <div class="flex gap-2">
+                                <button class="lead-status-btn px-3 py-1 rounded-full text-sm" data-status="quente" data-label="Quente">
+                                    <span class="material-icons mr-1" style="font-size:16px">local_fire_department</span> Quente
+                                </button>
+                                <button class="lead-status-btn px-3 py-1 rounded-full text-sm" data-status="morno" data-label="Morno">
+                                    <span class="material-icons mr-1" style="font-size:16px">device_thermostat</span> Morno
+                                </button>
+                                <button class="lead-status-btn px-3 py-1 rounded-full text-sm" data-status="frio" data-label="Frio">
+                                    <span class="material-icons mr-1" style="font-size:16px">ac_unit</span> Frio
+                                </button>
+                            </div>
+                            <p id="leadStatusSummary" class="mt-3 text-xs text-gray-400">
+                                Nenhum status selecionado.
+                            </p>
+                        </div>
+
+                        <!-- Notas -->
+                        <div>
+                            <h4 class="font-semibold mb-3 text-accent">Notas</h4>
+                            <div class="space-y-4">
+                                <div class="flex gap-2">
+                                    <textarea id="noteInput" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg resize-none" rows="3" placeholder="Adicione uma nota..."></textarea>
+                                    <button id="addNoteBtn" class="btn-primary px-4 py-2 rounded-lg flex-shrink-0">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div id="notesList" class="space-y-3 max-h-60 overflow-y-auto">
+                                    <!-- Notas serão adicionadas aqui dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div>
+                            <h4 class="font-semibold mb-3 text-accent">Ações Rápidas</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <button id="whatsappBtn" class="quick-action-btn">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </button>
+                                <button id="copyInfoBtn" class="quick-action-btn">
+                                    <i class="fas fa-copy"></i> Copiar Info
+                                </button>
+                                <button id="emailBtn" class="quick-action-btn">
+                                    <i class="fas fa-envelope"></i> Email
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de Download -->
+        <div id="downloadModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 sm:p-6 z-50 hidden">
+            <div class="modal-background rounded-lg shadow-xl max-w-md w-full elevation-3">
+                <div class="flex justify-between items-center border-b border-gray-600 px-6 py-4">
+                    <h3 class="text-lg font-semibold flex items-center">
+                        <span class="material-icons mr-2">download</span>
+                        Exportar Resultados
+                    </h3>
+                    <button id="closeDownloadModalBtn" class="text-gray-500 hover:text-gray-300">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-400 mb-4">Escolha o formato para download:</p>
+                    
+                    <div class="download-option" id="downloadCsv">
+                        <div class="download-option-icon csv">
+                            <i class="fas fa-file-csv text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-white">Arquivo CSV</h4>
+                            <p class="text-sm text-gray-400">Exportar para planilha (Excel, Google Sheets)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="download-option" id="downloadPdf">
+                        <div class="download-option-icon pdf">
+                            <i class="fas fa-file-pdf text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-white">Arquivo PDF</h4>
+                            <p class="text-sm text-gray-400">Exportar como documento PDF</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script type="application/legacy-disabled" data-legacy-runtime="disabled">
+            // Função para validar chave API
+            function validateApiKey() {
+                const apiKeyInput = document.getElementById('apiKey');
+                if (!apiKeyInput) return false;
+                
+                const apiKey = apiKeyInput.value.trim();
+                return apiKey !== '';
+            }
+
+            // Estado global da aplicação
+            const appState = {
+                allResults: [],
+                activeFilters: {},
+                isApiLoading: false,
+                googleMapsLoaded: false,
+                currentView: localStorage.getItem('preferredView') || 'list',
+                prospectedPlaces: new Set(JSON.parse(localStorage.getItem('prospectedPlaces') || '[]'))
+            };
+
+    // Função para gerar badges de Status e Score do Lead - definida no escopo global
+    window.getLeadBadges = function(placeId) {
+        let badges = '';
+        
+        // Status manual do lead (Quente/Morno/Frio)
+        if (window.leadManager) {
+            const lead = window.leadManager.getLead(placeId);
+            if (lead && lead.status) {
+                const s = lead.status;
+                const labels = { quente: 'Quente', morno: 'Morno', frio: 'Frio' };
+                const colors = { quente: 'bg-red-600', morno: 'bg-yellow-600', frio: 'bg-blue-600' };
+                badges += '<span class="' + (colors[s] || 'bg-gray-600') + ' text-white text-xs px-2 py-0.5 rounded-full mr-1">' + (labels[s] || s) + '</span>';
+            }
+        }
+        
+        // Score automático da ficha (Alto/Médio/Baixo)
+        if (window.LeadScoreService) {
+            const score = window.LeadScoreService.getScore(placeId);
+            if (score) {
+                const s = score.status;
+                const scoreText = window.LeadScoreService.getScoreText(s);
+                const colors = { hot: 'bg-red-600', warm: 'bg-yellow-600', cold: 'bg-blue-600' };
+                badges += '<span class="' + (colors[s] || 'bg-gray-600') + ' text-white text-xs px-2 py-0.5 rounded-full">' + scoreText + ' (' + score.score + 'pts)</span>';
+            }
+        }
+        
+        return badges;
+    };
+
+
+    // Função para obter coordenadas a partir de um endereço
+    async function obterCoordenadas(location) {
+        // Primeiro verifica se já é uma coordenada
+        const coordMatch = location.match(/^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/);
+        if (coordMatch) {
+            return {
+                lat: parseFloat(coordMatch[1]),
+                lng: parseFloat(coordMatch[2])
+            };
+        }
+        
+        // Verificar se temos um lugar selecionado do autocomplete
+        if (window.lastSelectedPlace && window.lastSelectedPlace.geometry) {
+            return {
+                lat: window.lastSelectedPlace.geometry.location.lat(),
+                lng: window.lastSelectedPlace.geometry.location.lng()
+            };
+        }
+        
+        // Se não tiver um lugar do autocomplete, usar o geocoding
+        try {
+            if (!mapService) {
+                throw new Error('Serviço de mapas não inicializado. Por favor, valide sua chave API.');
+            }
+            return await mapService.geocodeAddress(location);
+        } catch (error) {
+            throw new Error('Não foi possível encontrar a localização: ' + error.message);
+        }
+    }
+
+    // Aplicar filtros aos resultados da busca
+    function applySearchFilters() {
+        console.log('Aplicando filtros aos resultados:', appState.allResults); // Debug
+        
+        if (!appState.allResults || appState.allResults.length === 0) {
+            exibirResultados([]);
+            document.getElementById('resultCount').textContent = '0 resultados';
+            return;
+        }
+        
+        let filteredResults = [...appState.allResults];
+        const hideProspectedBtn = document.getElementById('hideProspectedBtn');
+        const hidingProspected = hideProspectedBtn.classList.contains('active');
+        
+        console.log('Filtros ativos:', appState.activeFilters); // Debug
+        console.log('Ocultando prospectados:', hidingProspected); // Debug
+
+        // Filtrar resultados prospectados apenas se o botão estiver ativo
+        if (hidingProspected) {
+            filteredResults = filteredResults.filter(r => !appState.prospectedPlaces.has(r.placeId));
+        }
+        
+        // Aplicar outros filtros ativos
+        Object.entries(appState.activeFilters).forEach(([filter, value]) => {
+            switch (filter) {
+                case 'rating':
+                    const minRating = parseFloat(value);
+                    filteredResults = filteredResults.filter(r => 
+                        r.avaliacao !== 'Não avaliado' && parseFloat(r.avaliacao) >= minRating
+                    );
+                    break;
+                case 'hasWebsite':
+                    filteredResults = filteredResults.filter(r => r.website !== 'Não disponível');
+                    break;
+                case 'noWebsite':
+                    filteredResults = filteredResults.filter(r => !r.website || r.website === 'Não disponível');
+                    break;
+                case 'hasPhone':
+                    filteredResults = filteredResults.filter(r => r.telefone !== 'Não disponível');
+                    break;
+                case 'manyReviews':
+                    const minReviews = parseInt(value);
+                    filteredResults = filteredResults.filter(r => {
+                        if (r.totalAvaliacoes === 'N/A') return false;
+                        const reviews = parseInt(r.totalAvaliacoes.replace(/,/g, ''));
+                        return reviews >= minReviews;
+                    });
+                    break;
+                case 'hasImage':
+                    filteredResults = filteredResults.filter(r => r.hasPhoto);
+                    break;
+            }
+        });
+        
+        console.log('Resultados filtrados:', filteredResults); // Debug
+        
+        // Exibir resultados
+        exibirResultados(filteredResults);
+        document.getElementById('resultCount').textContent = `${filteredResults.length} resultados`;
+    }
+
+    // Expor função globalmente para UIService
+    window.applySearchFilters = applySearchFilters;
+
+    // Função principal para iniciar a pesquisa de empresas
+    async function iniciarPesquisa() {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        const searchTerm = document.getElementById('searchTerm').value.trim();
+        const location = document.getElementById('location').value.trim();
+        const radius = parseInt(document.getElementById('radius').value);
+        const maxResults = parseInt(document.getElementById('maxResults').value);
+        
+        // Validar campos
+        if (!apiKey) {
+            mostrarErro('Erro de Validação', 'Por favor, valide sua chave API primeiro');
+            return;
+        }
+        
+        if (!searchTerm) {
+            mostrarErro('Erro de Validação', 'Por favor, insira um termo de busca');
+            return;
+        }
+        
+        if (!location) {
+            mostrarErro('Erro de Validação', 'Por favor, insira uma localização');
+            return;
+        }
+        
+        try {
+            // Limpar resultados anteriores
+            appState.allResults = [];
+            document.getElementById('listView').innerHTML = '';
+            document.getElementById('gridView').innerHTML = '';
+            document.getElementById('errorContainer').classList.add('hidden');
+            
+            // Mostrar loading indicator
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            
+            // Resetar filtros
+            appState.activeFilters = {};
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            
+            // Inicializa os serviços do Google Maps
+            if (window.google && window.google.maps) {
+                // Inicializar geocoder
+                if (!geocoder) {
+                    geocoder = new google.maps.Geocoder();
+                    console.log('Geocoder inicializado');
+                }
+
+                // Inicializar Places Service
+                if (!placesService) {
+                    const mapDiv = document.createElement('div');
+                    placesService = new google.maps.places.PlacesService(mapDiv);
+                    console.log('Places Service inicializado');
+                }
+
+                // Inicializar Autocomplete
+                const locationInput = document.getElementById('location');
+                if (locationInput) {
+                    // Limpar listeners anteriores
+                    if (autocomplete) {
+                        google.maps.event.clearInstanceListeners(locationInput);
+                    }
+
+                    // Criar novo Autocomplete
+                    autocomplete = new google.maps.places.Autocomplete(locationInput, {
+                        types: ['geocode'],
+                        componentRestrictions: { country: 'br' },
+                    });
+
+                    // Adicionar listener para mudança de local
+                    autocomplete.addListener('place_changed', function() {
+                        const place = autocomplete.getPlace();
+                        console.log('Local selecionado:', place);
+                        window.lastSelectedPlace = place; // Armazena o lugar selecionado
+                    });
+
+                    console.log('Autocomplete inicializado');
+                }
+            }
+
+            // Obter coordenadas da localização
+            console.log('Obtendo coordenadas para:', location);
+            const locationCoords = await obterCoordenadas(location);
+            console.log('Coordenadas obtidas:', locationCoords);
+            
+            // Exibir mapa
+            exibirMapa(locationCoords);
+            
+            // Verificar se o filtro de fotos está ativo
+            const shouldFetchPhotos = document.querySelector('.filter-chip[data-filter="hasImage"]').classList.contains('active');
+            
+            // Realizar a busca
+            console.log('Iniciando busca de empresas...');
+            try {
+                const results = await placesService.searchPlaces(searchTerm, locationCoords, radius, maxResults, shouldFetchPhotos);
+                console.log('Resultados obtidos:', results);
+                
+                // Processar e exibir resultados
+                await processarResultadosBusca(results);
+                
+                if (results && results.length > 0) {
+                    document.getElementById('downloadBtn').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Erro na busca:', error);
+                mostrarErro('Erro na Busca', error.message || 'Ocorreu um erro ao buscar as empresas');
+                document.getElementById('resultCount').textContent = '0 resultados';
+                exibirResultados([]);
+            }
+        } catch (error) {
+            console.error('Erro na pesquisa:', error);
+            mostrarErro('Erro na Pesquisa', error.message || 'Ocorreu um erro durante a pesquisa');
+        } finally {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+    }
+            
+    // Exibe o mapa com a localização central
+    function exibirMapa(center) {
+        if (!center || !center.lat || !center.lng) {
+            console.error('Coordenadas inválidas para o mapa:', center);
+            return;
+        }
+
+        const mapContainer = document.getElementById('mapContainer');
+        if (!mapContainer) {
+            console.error('Elemento mapContainer não encontrado');
+            return;
+        }
+        
+        mapContainer.classList.remove('hidden');
+        
+        // Criar ou redefinir o mapa
+        const mapElement = document.getElementById('map');
+        if (!mapElement) {
+            console.error('Elemento do mapa não encontrado');
+            return;
+        }
+        
+        mapElement.innerHTML = ''; // Limpar qualquer mapa anterior
+        
+        // Inicializar o serviço de mapa
+        if (!mapService) {
+            mapService = new MapService();
+        }
+        
+        mapService.initMap(mapElement, center);
+        mapService.clearMarkers();
+        mapService.addMarker(center, 'Localização central', true);
+    }
+    
+    // Função para processar os resultados da busca
+            
+            
+            // Obter detalhes adicionais de um lugar
+            function getPlaceDetails(placeId) {
+                return new Promise((resolve) => {
+                    const request = {
+                        placeId: placeId,
+                    fields: ['formatted_phone_number', 'website', 'opening_hours', 'photos']
+                    };
+                    
+                    placesService.getDetails(request, (place, status) => {
+                        if (status === 'OK') {
+                            resolve(place);
+                        } else {
+                            resolve({}); // Retorna objeto vazio se falhar
+                        }
+                    });
+                });
+            }
+            
+            // Atualiza a barra de progresso
+            function atualizarProgresso(current, total) {
+                const progress = Math.min(100, Math.round((current / total) * 100));
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = `${progress}% concluído`;
+            }
+            
+            // Adiciona marcadores no mapa para os resultados
+            function adicionarMarcadoresNoMapa() {
+                mapService.clearMarkers();
+                
+                appState.allResults.forEach(result => {
+                    if (result.localizacao && result.localizacao.lat && result.localizacao.lng) {
+                        const marker = mapService.addMarker(
+                            { lat: result.localizacao.lat, lng: result.localizacao.lng },
+                            result.nome
+                        );
+                        
+                        // Adicionar evento de clique para mostrar detalhes
+                        google.maps.event.addListener(marker, 'click', () => mostrarDetalhes(result));
+                    }
+                });
+                
+                // Ajustar o zoom para mostrar todos os marcadores
+                mapService.fitBounds();
+            }
+            
+            // Exibe os resultados
+            function exibirResultados(results) {
+                console.log('Exibindo resultados:', results);
+                
+                const listView = document.getElementById('listView');
+                const gridView = document.getElementById('gridView');
+                
+                // Limpar containers
+                listView.innerHTML = '';
+                gridView.innerHTML = '';
+                
+                if (!results || results.length === 0) {
+                    const emptyState = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-300">Nenhum resultado encontrado</h3>
+                            <p class="text-gray-500 mt-1">Realize uma pesquisa para exibir os resultados</p>
+                        </div>
+                    `;
+                    if (currentView === 'list') {
+                        listView.innerHTML = emptyState;
+                    } else {
+                        gridView.innerHTML = emptyState;
+                    }
+                    return;
+                }
+                
+                // Exibir na visualização atual
+                if (currentView === 'list') {
+                    exibirResultadosLista(results);
+                } else {
+                    exibirResultadosGrid(results);
+                }
+                
+                // Mostrar botão de download
+                document.getElementById('downloadBtn').classList.remove('hidden');
+            }
+            
+            // Exibe os resultados em uma lista com paginação
+            function exibirResultadosLista(results) {
+                const resultsList = document.getElementById('listView');
+                resultsList.innerHTML = '';
+                
+                if (results.length === 0) {
+                    resultsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-300">Nenhum resultado encontrado</h3>
+                            <p class="text-gray-500 mt-1">Tente ajustar seus critérios de pesquisa</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Constantes para paginação
+                const itemsPerPage = 21; // 21 itens por página
+                const totalPages = Math.ceil(results.length / itemsPerPage);
+                
+                // Inicializar estado de paginação se necessário
+                if (!window.paginationState) {
+                    window.paginationState = { listCurrentPage: 1, gridCurrentPage: 1 };
+                }
+                
+                // Garantir que a página atual seja válida
+                if (window.paginationState.listCurrentPage > totalPages) {
+                    window.paginationState.listCurrentPage = 1;
+                }
+                
+                // Obter resultados da página atual usando a função de paginação
+                const pageResults = paginarResultados(results, window.paginationState.listCurrentPage, itemsPerPage);
+                
+                // Calcular o índice inicial para referências globais
+                const startIndex = (window.paginationState.listCurrentPage - 1) * itemsPerPage;
+                
+                // Renderizar os resultados da página atual
+                pageResults.forEach((result, index) => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = `result-item p-4 hover:bg-gray-700 transition-colors duration-200 ${
+                        appState.prospectedPlaces.has(result.placeId) ? 'prospected-item' : ''
+                    }`;
+                    
+                    // Badge para itens prospectados
+                    const prospectedBadge = appState.prospectedPlaces.has(result.placeId) 
+                        ? '<div class="prospected-badge"><i class="fas fa-check-circle"></i> Empresa Prospectada</div>'
+                        : '';
+                        
+                        resultItem.innerHTML = `
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
+                                ${appState.activeFilters.hasImage ? `
+                                    <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
+                                        <img src="${result.foto || '/assets/images/no-image.webp'}" alt="${result.nome}" class="w-full h-full object-cover" onerror="this.src='/assets/images/no-image.webp'">
+                                    </div>
+                                ` : ''}
+                                <div class="flex-1 min-w-0">
+                                    ${prospectedBadge}
+                                    ${getLeadBadges(result.placeId)}
+                                    <h3 class="text-lg font-semibold text-white truncate mt-2">${result.nome}</h3>
+                                    <p class="text-gray-400 text-sm">${result.endereco}</p>
+                                    <div class="mt-3 flex flex-wrap gap-6">
+                                        <div class="flex items-center text-sm">
+                                            <i class="fas fa-phone text-gray-400 mr-2"></i>
+                                            <span class="text-gray-200">${result.telefone}</span>
+                                        </div>
+                                        <div class="flex items-center text-sm">
+                                            <i class="fas fa-globe text-gray-400 mr-2"></i>
+                                            ${result.website !== 'Não disponível' ? 
+                                                `<a href="${result.website}" target="_blank" class="text-accent hover:underline flex items-center">
+                                                    Visitar Website
+                                                    <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                                                </a>` : 
+                                                '<span class="text-gray-400">Website não disponível</span>'}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    ${result.avaliacao !== 'Não avaliado' ? 
+                                        `<div class="flex items-center">
+                                            <span class="text-yellow-300 font-medium mr-1">${result.avaliacao}</span>
+                                            <i class="fas fa-star text-yellow-300 text-xs"></i>
+                                            ${result.totalAvaliacoes !== 'N/A' ? 
+                                                `<span class="text-gray-400 text-xs ml-1">(${result.totalAvaliacoes})</span>` : ''}
+                                        </div>` : ''}
+                                    <div class="flex items-center gap-2">
+                                        <button class="btn-secondary px-3 py-1 rounded-lg text-sm view-details-btn" data-index="${i}">
+                                            <i class="fas fa-eye mr-1"></i> Mais Detalhes
+                                        </button>
+                                        <div class="prospected-badge ${appState.prospectedPlaces.has(result.placeId) ? 'prospected' : ''}" data-place-id="${result.placeId}">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>${appState.prospectedPlaces.has(result.placeId) ? 'Prospectado' : 'Não Prospectado'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        resultsList.appendChild(resultItem);
+                    });
+                    
+                    // Atualizar paginação
+                    updatePagination(window.paginationState.listCurrentPage);
+                    
+                    // Adicionar eventos aos botões de detalhes
+                    document.querySelectorAll('.view-details-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const index = parseInt(this.dataset.index);
+                            mostrarDetalhes(results[index]);
+                        });
+                    });
+                }
+                
+                // Função para atualizar a paginação
+                function updatePagination(currentPage) {
+                    // Limpar paginação
+                    paginationContainer.innerHTML = '';
+                    
+                    if (totalPages <= 1) {
+                        return; // Não precisa de paginação
+                    }
+                    
+                    // Texto informativo
+                    const pageInfo = document.createElement('span');
+                    pageInfo.className = 'text-gray-300 text-sm mr-2';
+                    pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+                    paginationContainer.appendChild(pageInfo);
+                    
+                    // Botão anterior
+                    if (currentPage > 1) {
+                        const prevBtn = document.createElement('button');
+                        prevBtn.className = 'page-btn px-3 py-1 rounded bg-gray-700 text-gray-300';
+                        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                        prevBtn.addEventListener('click', () => showPage(currentPage - 1));
+                        paginationContainer.appendChild(prevBtn);
+                    }
+                    
+                    // Botões de página (máximo 5)
+                    const maxButtons = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+                    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+                    
+                    // Ajustar se estiver perto do final
+                    if (endPage - startPage + 1 < maxButtons && startPage > 1) {
+                        startPage = Math.max(1, endPage - maxButtons + 1);
+                    }
+                    
+                    for (let i = startPage; i <= endPage; i++) {
+                        const pageBtn = document.createElement('button');
+                        pageBtn.className = `page-btn px-3 py-1 rounded ${i === currentPage ? 'bg-accent text-white' : 'bg-gray-700 text-gray-300'}`;
+                        pageBtn.textContent = i;
+                        pageBtn.addEventListener('click', () => showPage(i));
+                        paginationContainer.appendChild(pageBtn);
+                    }
+                    
+                    // Botão próximo
+                    if (currentPage < totalPages) {
+                        const nextBtn = document.createElement('button');
+                        nextBtn.className = 'page-btn px-3 py-1 rounded bg-gray-700 text-gray-300';
+                        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                        nextBtn.addEventListener('click', () => showPage(currentPage + 1));
+                        paginationContainer.appendChild(nextBtn);
+                    }
+                }
+                
+                // Adicionar container de paginação ao final da lista
+                resultsList.appendChild(paginationContainer);
+                
+                // Mostrar primeira página
+                showPage(1);
+            }
+            
+            // Exibe os resultados em grid/cards
+            function exibirResultadosGrid(results) {
+                const gridView = document.getElementById('gridView');
+                gridView.innerHTML = '';
+                
+                if (results.length === 0) {
+                    gridView.innerHTML = `
+                        <div class="col-span-full empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-300">Nenhum resultado encontrado</h3>
+                            <p class="text-gray-500 mt-1">Tente ajustar seus critérios de pesquisa</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Implementar paginação simples
+                const itemsPerPage = 21;
+                
+                // Dividir resultados em páginas
+                const totalPages = Math.ceil(results.length / itemsPerPage);
+                
+                // Criar container para paginação
+                const paginationContainer = document.createElement('div');
+                paginationContainer.className = 'pagination flex justify-center items-center gap-2 mt-4 mb-4 p-2 bg-gray-800 rounded col-span-full';
+                
+                // Função para mostrar uma página específica
+                function showPage(pageNum) {
+                    // Limpar grid
+                    gridView.innerHTML = '';
+                    
+                    // Calcular índices
+                    const start = (pageNum - 1) * itemsPerPage;
+                    const end = Math.min(start + itemsPerPage, results.length);
+                    
+                    // Mostrar resultados da página atual
+                    for (let i = start; i < end; i++) {
+                        const result = results[i];
+                        const resultCard = document.createElement('div');
+                        resultCard.className = `grid-card transition-all duration-300 hover:shadow-lg ${
+                            appState.prospectedPlaces.has(result.placeId) ? 'prospected-item' : ''
+                        }`;
+                        
+                        resultCard.innerHTML = `
+                            <div class="grid-card-header relative">
+                                ${appState.activeFilters.hasImage ? `
+                                    <div class="w-full h-48 mb-4 rounded-t-lg overflow-hidden">
+                                        <img src="${result.foto || '/assets/images/no-image.webp'}" alt="${result.nome}" class="w-full h-full object-cover" onerror="this.src='/assets/images/no-image.webp'">
+                                    </div>
+                                ` : ''}
+                                <h3 class="text-lg font-semibold text-white truncate mt-2">${result.nome}</h3>
+                                    ${result.avaliacao !== 'Não avaliado' ? 
+                                    `<div class="flex items-center bg-gray-800 px-2 py-1 rounded-full mt-2">
+                                            <span class="text-yellow-300 text-sm mr-1">${result.avaliacao}</span>
+                                            <i class="fas fa-star text-yellow-300 text-xs"></i>
+                                        </div>` : ''}
+                            </div>
+                            <div class="grid-card-body">
+                                <div class="mb-4">
+                                    <div class="text-gray-400 text-xs mb-1">ENDEREÇO</div>
+                                    <p class="text-sm text-gray-200">${result.endereco}</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="text-gray-400 text-xs mb-1">TELEFONE</div>
+                                        <p class="text-sm text-gray-200">${result.telefone}</p>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-400 text-xs mb-1">WEBSITE</div>
+                                        ${result.website !== 'Não disponível' ? 
+                                            `<a href="${result.website}" target="_blank" class="text-accent hover:underline text-sm flex items-center">
+                                                Visitar Website
+                                                <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                                            </a>` : 
+                                            '<p class="text-sm text-gray-400">Não disponível</p>'}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-card-footer flex justify-between items-center gap-2">
+                                <button class="text-xs btn-secondary px-2 py-1 rounded view-details-btn" data-index="${i}">
+                                    <i class="fas fa-ellipsis-h mr-1"></i> Detalhes
+                                </button>
+                                <div class="prospected-badge ${appState.prospectedPlaces.has(result.placeId) ? 'prospected' : ''}" data-place-id="${result.placeId}">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>${appState.prospectedPlaces.has(result.placeId) ? 'Prospectado' : 'Não Prospectado'}</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        gridView.appendChild(resultCard);
+                    }
+                    
+                    // Atualizar paginação
+                    updatePagination(window.paginationState.gridCurrentPage);
+                    
+                    // Adicionar eventos aos botões de detalhes
+                    document.querySelectorAll('.view-details-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const index = parseInt(this.dataset.index);
+                            mostrarDetalhes(results[index]);
+                        });
+                    });
+                }
+                
+                // Função para atualizar a paginação
+                function updatePagination(currentPage) {
+                    // Limpar paginação
+                    paginationContainer.innerHTML = '';
+                    
+                    if (totalPages <= 1) {
+                        return; // Não precisa de paginação
+                    }
+                    
+                    // Texto informativo
+                    const pageInfo = document.createElement('span');
+                    pageInfo.className = 'text-gray-300 text-sm mr-2';
+                    pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+                    paginationContainer.appendChild(pageInfo);
+                    
+                    // Botão anterior
+                    if (currentPage > 1) {
+                        const prevBtn = document.createElement('button');
+                        prevBtn.className = 'page-btn px-3 py-1 rounded bg-gray-700 text-gray-300';
+                        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                        prevBtn.addEventListener('click', () => showPage(currentPage - 1));
+                        paginationContainer.appendChild(prevBtn);
+                    }
+                    
+                    // Botões de página (máximo 5)
+                    const maxButtons = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+                    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+                    
+                    // Ajustar se estiver perto do final
+                    if (endPage - startPage + 1 < maxButtons && startPage > 1) {
+                        startPage = Math.max(1, endPage - maxButtons + 1);
+                    }
+                    
+                    for (let i = startPage; i <= endPage; i++) {
+                        const pageBtn = document.createElement('button');
+                        pageBtn.className = `page-btn px-3 py-1 rounded ${i === currentPage ? 'bg-accent text-white' : 'bg-gray-700 text-gray-300'}`;
+                        pageBtn.textContent = i;
+                        pageBtn.addEventListener('click', () => showPage(i));
+                        paginationContainer.appendChild(pageBtn);
+                    }
+                    
+                    // Botão próximo
+                    if (currentPage < totalPages) {
+                        const nextBtn = document.createElement('button');
+                        nextBtn.className = 'page-btn px-3 py-1 rounded bg-gray-700 text-gray-300';
+                        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                        nextBtn.addEventListener('click', () => showPage(currentPage + 1));
+                        paginationContainer.appendChild(nextBtn);
+                    }
+                }
+                
+                // Adicionar container de paginação ao final do grid
+                gridView.appendChild(paginationContainer);
+                
+                // Mostrar primeira página
+                showPage(1);
+            }
+            
+            // Mostra detalhes de um resultado em um modal
+            function mostrarDetalhes(result) {
+                console.log('Mostrando detalhes para:', result);
+                const modal = document.getElementById('detailsModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalContent = document.getElementById('modalContent');
+                
+                if (!modal || !modalTitle || !modalContent) {
+                    console.error('Elementos do modal não encontrados', { modal, modalTitle, modalContent });
+                    return;
+                }
+                
+                modalTitle.textContent = result.nome;
+                modalContent.innerHTML = `
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold mb-2 text-accent">Informações</h4>
+                            <ul class="space-y-4">
+                                <li>
+                                    <div class="flex items-start">
+                                        <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-3"></i>
+                                        <div>
+                                            <strong class="block text-sm text-gray-400">Endereço</strong>
+                                            <span class="text-white">${result.endereco}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-start">
+                                        <i class="fas fa-phone text-gray-400 mt-1 mr-3"></i>
+                                        <div>
+                                            <strong class="block text-sm text-gray-400">Telefone</strong>
+                                            <span class="text-white">${result.telefone}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-start">
+                                        <i class="fas fa-globe text-gray-400 mt-1 mr-3"></i>
+                                        <div>
+                                            <strong class="block text-sm text-gray-400">Website</strong>
+                                            <span class="text-white">${result.website !== 'Não disponível' ? 
+                                                `<a href="${result.website}" target="_blank" class="text-accent hover:underline">${result.website}</a>` : 
+                                                'Não disponível'}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2 text-accent">Avaliações</h4>
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <div class="flex items-center mb-4">
+                                    <span class="text-3xl font-bold mr-3 ${result.avaliacao !== 'Não avaliado' ? 'text-yellow-300' : 'text-gray-400'}">
+                                        ${result.avaliacao !== 'Não avaliado' ? result.avaliacao : 'N/A'}
+                                    </span>
+                                    ${result.avaliacao !== 'Não avaliado' ? 
+                                        `<div class="flex flex-col">
+                                            <div class="flex">
+                                                ${Array(5).fill().map((_, i) => 
+                                                    `<i class="fas fa-star ${i < Math.floor(parseFloat(result.avaliacao)) ? 'text-yellow-300' : 'text-gray-500'}"></i>`
+                                                ).join('')}
+                                            </div>
+                                            <span class="text-sm text-gray-400 mt-1">Baseado em ${result.totalAvaliacoes} avaliações</span>
+                                        </div>` : ''}
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-400">Google Places ID:</span>
+                                    <span class="text-xs font-mono bg-gray-700 px-2 py-1 rounded">${result.placeId}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-center">
+                        <button id="viewOnMapBtn" class="btn-primary px-6 py-2 rounded-lg flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i> Ver no Mapa
+                        </button>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+                
+                // Exibir o modal
+                modal.classList.remove('hidden');
+                
+                // Configurar o botão de fechar
+                const closeModalBtn = document.getElementById('closeModalBtn');
+                if (closeModalBtn) {
+                    // Remover eventos anteriores
+                    const newCloseBtn = closeModalBtn.cloneNode(true);
+                    closeModalBtn.parentNode.replaceChild(newCloseBtn, closeModalBtn);
+                    
+                    // Adicionar novo evento
+                    newCloseBtn.addEventListener('click', () => {
+                        modal.classList.add('hidden');
+                    });
+                }
+                
+                // Adicionar evento para o botão "Ver no Mapa"
+                const viewOnMapBtn = document.getElementById('viewOnMapBtn');
+                if (viewOnMapBtn) {
+                    // Remover eventos anteriores
+                    const newViewOnMapBtn = viewOnMapBtn.cloneNode(true);
+                    viewOnMapBtn.parentNode.replaceChild(newViewOnMapBtn, viewOnMapBtn);
+                    
+                    // Adicionar novo evento
+                    newViewOnMapBtn.addEventListener('click', function() {
+                        if (result.localizacao) {
+                            mapService.panTo(result.localizacao);
+                            mapService.setZoom(17);
+                            
+                            // Destacar o marcador correspondente
+                            mapService.highlightMarker(result.localizacao);
+                            
+                            // Fechar o modal
+                            modal.classList.add('hidden');
+                        }
+                    });
+                }
+                
+                // Fechar modal ao clicar fora
+                const handleOutsideClick = (e) => {
+                    if (e.target === modal) {
+                        modal.classList.add('hidden');
+                        modal.removeEventListener('click', handleOutsideClick);
+                    }
+                };
+                
+                modal.addEventListener('click', handleOutsideClick);
+            }
+            
+            // Exporta os dados para CSV
+            function exportarCSV() {
+                if (appState.allResults.length === 0) return;
+                
+                const headers = ['Nome', 'Endereço', 'Telefone', 'Website', 'Avaliação', 'Total de Avaliações', 'Status', 'Google Places ID', 'URL da Foto'];
+                
+                const rows = appState.allResults.map(result => [
+                    `"${result.nome.replace(/"/g, '""')}"`,
+                    `"${result.endereco.replace(/"/g, '""')}"`,
+                    `"${result.telefone.replace(/"/g, '""')}"`,
+                    `"${result.website.replace(/"/g, '""')}"`,
+                    `"${result.avaliacao}"`,
+                    `"${result.totalAvaliacoes}"`,
+                    `"${appState.prospectedPlaces.has(result.placeId) ? 'Prospectado' : 'Não Prospectado'}"`,
+                    `"${result.placeId}"`,
+                    `"${result.foto}"`
+                ]);
+                
+                const csvContent = [headers, ...rows]
+                    .map(row => row.join(','))
+                    .join('\n');
+                
+                // Adicionar BOM para UTF-8
+                const BOM = '\uFEFF';
+                const csvContentWithBOM = BOM + csvContent;
+                
+                const blob = new Blob([csvContentWithBOM], { type: 'text/csv;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `empresas_${new Date().toISOString().slice(0, 10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+
+            // Função para exportar PDF
+            function exportarPDF() {
+                if (appState.allResults.length === 0) return;
+
+                // Criar conteúdo HTML para conversão
+                let content = `
+                    <!DOCTYPE html>
+                    <html lang="pt-BR">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Relatório de Empresas</title>
+                        <style>
+                            body { 
+                                font-family: Arial, sans-serif;
+                                margin: 20px;
+                            }
+                            .header { 
+                                text-align: center; 
+                                margin-bottom: 20px;
+                                border-bottom: 2px solid #333;
+                                padding-bottom: 20px;
+                            }
+                            .result-item { 
+                                margin-bottom: 15px; 
+                                padding: 10px; 
+                                border-bottom: 1px solid #ccc; 
+                            }
+                            .result-title { 
+                                font-size: 16px; 
+                                font-weight: bold; 
+                                margin-bottom: 5px; 
+                                color: #333;
+                            }
+                            .result-info { 
+                                font-size: 14px; 
+                                color: #666; 
+                                margin: 3px 0; 
+                            }
+                            .prospected { 
+                                color: #10B981; 
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>Relatório de Empresas</h1>
+                            <p>Data: ${new Date().toLocaleDateString('pt-BR')}</p>
+                            <p>Total de resultados: ${appState.allResults.length}</p>
+                        </div>
+                `;
+
+                appState.allResults.forEach(result => {
+                    content += `
+                        <div class="result-item">
+                            <div style="display: flex; align-items: start; margin-bottom: 10px;">
+                                <img src="${result.foto}" alt="${result.nome}" 
+                                     style="width: 120px; height: 80px; object-fit: cover; border-radius: 4px; margin-right: 15px;"
+                                     onerror="this.src='assets/images/no-image.webp'">
+                                <div>
+                                    <div class="result-title">${result.nome}</div>
+                                    <div class="result-info">Endereço: ${result.endereco}</div>
+                            <div class="result-info">Telefone: ${result.telefone}</div>
+                            <div class="result-info">Website: ${result.website}</div>
+                            <div class="result-info">Avaliação: ${result.avaliacao} (${result.totalAvaliacoes} avaliações)</div>
+                            <div class="result-info ${appState.prospectedPlaces.has(result.placeId) ? 'prospected' : ''}">
+                                Status: ${appState.prospectedPlaces.has(result.placeId) ? 'Prospectado' : 'Não Prospectado'}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                content += `
+                    </body>
+                    </html>
+                `;
+
+                // Criar um Blob com o conteúdo HTML e encoding UTF-8
+                const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const win = window.open(url, '_blank');
+                if (win) {
+                    win.onload = function() {
+                        win.print();
+                        setTimeout(() => {
+                            URL.revokeObjectURL(url);
+                        }, 1000);
+                    };
+                } else {
+                    alert('Por favor, permita popups para gerar o PDF.');
+                    URL.revokeObjectURL(url);
+                };
+            }
+            
+            // Mostra mensagem de erro
+            function mostrarErro(titulo, mensagem) {
+                const errorContainer = document.getElementById('errorContainer');
+                const errorTitle = document.getElementById('errorTitle');
+                const errorDetails = document.getElementById('errorDetails');
+                
+                errorTitle.textContent = titulo;
+                errorDetails.textContent = mensagem;
+                errorContainer.classList.remove('hidden');
+                
+                // Rolagem suave para o erro
+                errorContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Função para atualizar o status de prospecção
+            function toggleProspectedStatus(badge) {
+                const placeId = badge.dataset.placeId;
+                const isProspected = appState.prospectedPlaces.has(placeId);
+                const parentItem = badge.closest('.result-item, .grid-card');
+                
+                if (isProspected) {
+                    appState.prospectedPlaces.delete(placeId);
+                    badge.classList.remove('prospected');
+                    badge.innerHTML = '<i class="fas fa-check-circle"></i><span>Não Prospectado</span>';
+                    if (parentItem) {
+                        parentItem.classList.remove('prospected-item');
+                    }
+                } else {
+                    appState.prospectedPlaces.add(placeId);
+                    badge.classList.add('prospected');
+                    badge.innerHTML = '<i class="fas fa-check-circle"></i><span>Prospectado</span>';
+                    if (parentItem) {
+                        parentItem.classList.add('prospected-item', 'prospecting-animation');
+                        // Remover a classe de animação após ela terminar
+                        setTimeout(() => {
+                            parentItem.classList.remove('prospecting-animation');
+                        }, 500);
+                    }
+                }
+                
+                localStorage.setItem('prospectedPlaces', JSON.stringify([...appState.prospectedPlaces]));
+                
+                // Se estiver ocultando prospectados, atualizar a visualização
+                const hideProspectedBtn = document.getElementById('hideProspectedBtn');
+                if (hideProspectedBtn.classList.contains('active')) {
+                    applyFilters();
+                }
+            }
+
+            // Função para definir a visualização
+            function setView(viewType) {
+                appState.currentView = viewType;
+                localStorage.setItem('preferredView', viewType);
+                
+                // Atualizar botões
+                document.getElementById('listViewBtn').classList.toggle('active', viewType === 'list');
+                document.getElementById('gridViewBtn').classList.toggle('active', viewType === 'grid');
+                
+                // Atualizar visualização
+                document.getElementById('listView').classList.toggle('hidden', viewType !== 'list');
+                document.getElementById('gridView').classList.toggle('hidden', viewType !== 'grid');
+                
+                // Atualizar a exibição se houver resultados
+                if (appState.allResults.length > 0) {
+                    applyFilters();
+                }
+            }
+        </script>
+
+        <!-- Modal de Backup -->
+        <div id="backupModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 sm:p-6 z-50 hidden">
+            <div class="modal-background rounded-3xl shadow-2xl w-[min(1120px,calc(100vw-2rem))] elevation-3 border border-white/10 overflow-hidden">
+                <div class="flex justify-between items-start gap-4 border-b border-white/10 px-6 py-5 bg-slate-950/60 backdrop-blur-sm">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.24em] text-slate-300/80 mb-2">Centro de configuração local</p>
+                        <h3 class="text-xl font-semibold flex items-center text-white">
+                            <span class="material-icons mr-2 text-slate-200">settings</span>
+                            Configurações, backup e segurança
+                        </h3>
+                        <p class="mt-2 text-sm text-slate-400 max-w-2xl">Centralize conexão da API, ajuda, exportação, restauração e senha local sem espalhar atalhos em cada página.</p>
+                    </div>
+                    <button id="closeBackupModalBtn" class="text-slate-400 hover:text-white transition-colors">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="grid gap-0 lg:grid-cols-[1.05fr_0.95fr] bg-slate-950">
+                    <div class="p-6 lg:p-7 space-y-4 border-b lg:border-b-0 lg:border-r border-white/10">
+                        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="rounded-xl bg-white/10 p-2 text-slate-200">
+                                    <span class="material-icons" style="font-size:18px">hub</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-white">Conexão e ajuda</h4>
+                                    <p class="text-sm text-slate-400">API, guia de uso e acesso rápido aos pontos críticos da instalação.</p>
+                                </div>
+                            </div>
+                            <div class="grid gap-3 md:grid-cols-2">
+                                <button id="apiKeyBtn" type="button" class="download-option text-left">
+                                    <div class="download-option-icon">
+                                        <span class="material-icons" style="font-size:20px">vpn_key</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-medium text-white">Conectar API</h4>
+                                        <p class="text-sm text-gray-400">Validar, destravar ou trocar a chave do Google Places</p>
+                                    </div>
+                                </button>
+                                <a href="ajuda.html" class="download-option">
+                                    <div class="download-option-icon">
+                                        <span class="material-icons" style="font-size:20px">help</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-medium text-white">Abrir ajuda</h4>
+                                        <p class="text-sm text-gray-400">Rever fluxo, segurança, custo e organização comercial</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mt-4 border-t border-white/10 pt-4">
+                                <p class="text-xs text-slate-400 leading-relaxed">Quando a API não estiver conectada na sessão atual, o site exibe um alerta no topo para evitar buscas quebradas ou sem contexto.</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                            <div class="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
+                                <p class="text-sm font-medium text-white">Proteção e recuperação</p>
+                                <span class="text-xs uppercase tracking-[0.18em] text-slate-500">Backup</span>
+                            </div>
+                            <p class="mt-3 text-sm text-slate-400">Gerencie seus dados armazenados localmente.</p>
+                            <div class="mt-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-slate-300">
+                                Backup manual sempre criptografado com a senha de instalação.
+                            </div>
+                            <div class="mt-4 grid gap-3 md:grid-cols-2">
+                                <div class="download-option md:col-span-2" id="exportSecureDataBtn">
+                                    <div class="download-option-icon">
+                                        <i class="fas fa-user-shield text-xl"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-medium text-white">Exportar Backup Criptografado</h4>
+                                        <p class="text-sm text-gray-400">Cria um snapshot JSON protegido pela senha de instalação</p>
+                                    </div>
+                                </div>
+
+                                <div class="download-option md:col-span-2" id="importDataBtnContainer">
+                                    <div class="download-option-icon">
+                                        <i class="fas fa-cloud-upload-alt text-xl"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-medium text-white">Importar Backup</h4>
+                                        <p class="text-sm text-gray-400">Restaure um backup JSON criptografado ou legado</p>
+                                    </div>
+                                    <input type="file" id="importFileInput" accept=".json" class="hidden" />
+                                </div>
+
+                                <div class="download-option md:col-span-2" id="enableAutoBackupBtn">
+                                    <div class="download-option-icon">
+                                        <i class="fas fa-history text-xl"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-medium text-white">Ativar Auto Backup</h4>
+                                        <p class="text-sm text-gray-400">Snapshots no IndexedDB com senha</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-red-400/15 bg-red-500/[0.03] p-4">
+                            <div id="clearDataBtn" class="download-option !bg-transparent !border-0 !shadow-none !p-0">
+                                <div class="download-option-icon">
+                                    <i class="fas fa-trash-alt text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-white">Limpar Dados</h4>
+                                    <p class="text-sm text-gray-400">
+                                        <strong class="text-red-300">ATENÇÃO:</strong> Esta ação apagará TODOS os seus dados
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 lg:p-7 space-y-4 bg-slate-950/70">
+                        <div id="autoBackupPanel" class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="rounded-xl bg-white/10 p-2 text-slate-200">
+                                    <span class="material-icons" style="font-size:18px">rotate_left</span>
+                                </div>
+                                <h4 class="font-medium text-white">AUTO Local</h4>
+                            </div>
+                            <p class="text-sm text-slate-400">Recupera o ultimo snapshot seguro salvo fora do localStorage.</p>
+                            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                                <div class="download-option !bg-black/20 border border-white/10" id="restoreAutoBackupBtn">
+                                    <div class="download-option-icon">
+                                        <i class="fas fa-rotate-left text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-medium text-white">Restaurar</h4>
+                                        <p class="text-sm text-gray-400">Trazer o snapshot mais recente</p>
+                                    </div>
+                                </div>
+
+                                <div class="download-option hidden !bg-black/20 border border-slate-600/20" id="disableAutoBackupBtn">
+                                    <div class="download-option-icon">
+                                        <i class="fas fa-pause-circle text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-medium text-white">Desativar</h4>
+                                        <p class="text-sm text-gray-400">Pausar snapshots automáticos</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="autoBackupStatusText" class="text-xs text-slate-300 mt-4 leading-relaxed">
+                                Backup manual ativo.
+                            </p>
+                            <p id="manualBackupReminderText" class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                Recomendacao: exporte um backup manual ao menos a cada 7 dias.
+                            </p>
+                        </div>
+
+                        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="rounded-xl bg-white/10 p-2 text-slate-200">
+                                    <span class="material-icons" style="font-size:18px">password</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-white">Alterar senha de criptografia</h4>
+                                    <p class="text-sm text-gray-400">Troque a senha sem ocupar a tela inteira.</p>
+                                </div>
+                            </div>
+                            <div class="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+                                <div>
+                                    <label for="rotateSecretCurrentInput" class="block text-xs font-medium uppercase tracking-[0.14em] text-slate-400 mb-2">Senha atual</label>
+                                    <input id="rotateSecretCurrentInput" type="password" placeholder="Atual" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                                </div>
+                                <div>
+                                    <label for="rotateSecretNewInput" class="block text-xs font-medium uppercase tracking-[0.14em] text-slate-400 mb-2">Nova senha</label>
+                                    <input id="rotateSecretNewInput" type="password" placeholder="Nova" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                                </div>
+                                <div class="flex items-end">
+                                    <button id="rotateSecretBtn" type="button" class="btn-secondary inline-flex min-h-[52px] items-center justify-center gap-2 rounded-2xl px-5 py-3.5 font-semibold w-full md:w-auto">
+                                        <span class="material-icons" style="font-size:18px">swap_horiz</span>
+                                        Salvar
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-xs text-slate-400">4 a 12 caracteres, apenas letras e números. Diferencia maiúsculas e minúsculas.</p>
+                            <div class="mt-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-xs text-slate-300">
+                                Ao salvar, a instalação e o vault da API são recriptografados com a nova senha e os backups seguros passam a usar a mesma proteção.
+                            </div>
+                            <p id="rotateSecretStatus" class="hidden mt-4 rounded-2xl px-4 py-3 text-sm"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pinDialog" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-y-auto p-4 sm:p-6 z-[70] hidden">
+            <div class="modal-background rounded-3xl shadow-2xl w-full elevation-3 border border-white/10 overflow-hidden">
+                <div class="flex justify-between items-start gap-4 border-b border-white/10 px-6 py-5 bg-slate-950/60 backdrop-blur-sm">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.24em] text-slate-300/80 mb-2">Proteção local</p>
+                        <h3 id="pinDialogTitle" class="text-xl font-semibold flex items-center text-white">Digite a senha</h3>
+                        <p id="pinDialogDescription" class="mt-2 text-sm text-slate-400">A senha não será exibida enquanto você digita.</p>
+                    </div>
+                    <button id="pinDialogCloseBtn" type="button" class="text-slate-400 hover:text-white transition-colors" aria-label="Fechar diálogo de senha">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="p-6 space-y-4 bg-slate-950">
+                    <div>
+                        <label id="pinDialogLabel" for="pinDialogInput" class="block text-sm font-medium text-slate-200 mb-2">Senha</label>
+                        <input id="pinDialogInput" type="password" placeholder="Digite a senha" autocomplete="current-password" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                    </div>
+                    <div id="pinDialogConfirmWrap" class="hidden">
+                        <label id="pinDialogConfirmLabel" for="pinDialogConfirmInput" class="block text-sm font-medium text-slate-200 mb-2">Confirmar senha</label>
+                        <input id="pinDialogConfirmInput" type="password" placeholder="Confirme a senha" autocomplete="new-password" class="w-full rounded-2xl border border-gray-700 bg-gray-950 px-4 py-3 text-white placeholder:text-gray-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-400/20">
+                    </div>
+                    <p id="pinDialogError" class="hidden rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100"></p>
+                    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                        <button id="pinDialogCancelBtn" type="button" class="btn-secondary rounded-2xl px-4 py-3 font-semibold">Cancelar</button>
+                        <button id="pinDialogSubmitBtn" type="button" class="btn-primary rounded-2xl px-4 py-3 font-semibold">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <div data-global-footer></div>
+    <script src="src/js/version.js?v=1.0.0"></script>
+    <script src="src/js/global-layout.js?v=1.0.0" defer></script>
+    <script src="src/js/header-menu.js?v=1.0.0" defer></script>
+    <script src="src/js/services/SecurityService.js?v=1.0.0"></script>
+    <script src="src/js/export-import.js?v=1.0.0"></script>
+    <script src="src/js/services/ApiKeyService.js?v=1.0.0"></script>
+    <script src="src/js/services/PlacesService.js?v=1.0.0"></script>
+    <script src="src/js/services/MapService.js?v=1.0.0"></script>
+    <script src="src/js/services/LeadManager.js?v=1.0.0"></script>
+    <script src="src/js/services/SearchHistoryService.js?v=1.0.0"></script>
+    <script src="src/js/services/LeadScoreService.js?v=1.0.0"></script>
+    <script src="src/js/lead-modal.js?v=1.0.0"></script>
+    <script src="src/js/app.js?v=1.0.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltipMap = {
+                apiKeyBtn: 'Valide, destrave ou troque a chave usada nas buscas.',
+                openBackupModalBtn: 'Abra a central de configurações, backup, ajuda e segurança.',
+                onboardingNewApiKey: 'Cole a chave criada no Google Cloud para liberar as buscas.',
+                onboardingNewPin: 'Crie uma senha local para proteger sua chave e seus backups.',
+                onboardingNewSubmit: 'Valida a chave, salva a senha local e libera o uso da ferramenta.',
+                onboardingRestoreFile: 'Selecione um arquivo de backup seguro exportado anteriormente.',
+                onboardingRestorePin: 'Use a mesma senha escolhida quando o backup foi criado.',
+                onboardingRestoreSubmit: 'Restaura os dados do backup e libera o acesso.',
+                onboardingUnlockPin: 'Digite sua senha local para reabrir a ferramenta neste navegador.',
+                onboardingUnlockSubmit: 'Desbloqueia o acesso local com a senha salva.',
+                apiKey: 'Cole aqui a chave criada no Google Cloud.',
+                clearKeyBtn: 'Remove a chave salva deste navegador.',
+                validateKeyBtn: 'Confere se a chave funciona e salva para as próximas buscas.',
+                searchTerm: 'Descreva o tipo de empresa ou serviço que você quer encontrar.',
+                location: 'Informe a cidade, bairro, endereço ou coordenadas centrais da busca.',
+                radius: 'Escolha a distância máxima a partir do ponto informado.',
+                maxResults: 'Define quantas fichas o sistema tentará reunir nesta extração.',
+                startSearchBtn: 'Inicia a coleta das empresas com base nos filtros atuais.',
+                listViewBtn: 'Mostra os resultados em lista, com leitura mais rápida.',
+                gridViewBtn: 'Mostra os resultados em cards, com foco visual.',
+                hideProspectedBtn: 'Esconde da lista as empresas já marcadas como trabalhadas.',
+                downloadBtn: 'Exporta os resultados atuais em arquivo.',
+                noteInput: 'Use este campo para registrar contexto, objeções ou próximos passos do lead.',
+                addNoteBtn: 'Salva a nota no lead selecionado.',
+                whatsappBtn: 'Abre um contato rápido pelo WhatsApp quando houver telefone disponível.',
+                copyInfoBtn: 'Copia os dados principais da empresa para colar em outra ferramenta.',
+                emailBtn: 'Prepara um atalho de contato por e-mail quando houver endereço disponível.'
+            };
+
+            Object.entries(tooltipMap).forEach(([id, text]) => {
+                const element = document.getElementById(id);
+                if (!element) return;
+                element.setAttribute('title', text);
+                if (!element.getAttribute('aria-label')) {
+                    element.setAttribute('aria-label', text);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

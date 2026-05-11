@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Bloqueia todos os bots de rastreamento
+# Impede a indexação de todo o conteúdo do site

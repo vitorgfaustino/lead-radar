@@ -1,0 +1,117 @@
+<!--
+Copyright (C) 2026 Vitor Faustino
+Licensed under the GNU Affero General Public License v3.0.
+This software is provided "as is", without any warranty of any kind.
+The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+to the fullest extent permitted by law.
+See the GNU Affero General Public License for details.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <script src="src/js/access-guard.js?v=1.0.0"></script>
+    <title>Kanban de Leads — Busca Empresas</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <script src="src/js/tailwind-config.js?v=1.0.0"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/styles.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/design-system.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/premium-redesign.css?v=1.0.0">
+
+</head>
+<body class="min-h-screen dark flex flex-col bg-bg-secondary" data-page-view="kanban">
+    <div data-global-header></div>
+
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-[88rem]">
+        <section class="history-hero">
+            <span class="section-kicker">
+                <span class="material-icons" style="font-size:18px">view_kanban</span>
+                Acompanhamento visual
+            </span>
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mt-3">
+                <div>
+                    <h2 class="hero-title !text-4xl md:!text-5xl">Organize os leads por <span>próximo passo.</span></h2>
+                    <p class="hero-copy !mt-3">Arraste os cards entre as colunas para atualizar a etapa comercial, abra detalhes para editar o lead e use o Histórico para filtros mais detalhados.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <button id="refreshKanbanBtn" class="btn-secondary px-4 py-2 rounded-lg flex items-center gap-2 w-fit" type="button" title="Atualiza as colunas e os números do painel com os dados mais recentes.">
+                        <span class="material-icons" style="font-size:18px">refresh</span>
+                        Atualizar board
+                    </button>
+                    <a href="historico.html" class="btn-secondary px-4 py-2 rounded-lg flex items-center gap-2 w-fit" title="Voltar para a lista completa com filtros avançados.">
+                        <span class="material-icons" style="font-size:18px">history</span>
+                        Ver Histórico
+                    </a>
+                    <a href="index.html" class="btn-primary px-4 py-2 rounded-lg flex items-center gap-2 w-fit" title="Iniciar uma nova busca de empresas.">
+                        <span class="material-icons" style="font-size:18px">travel_explore</span>
+                        Nova extração
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div id="kanbanStats" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5"></div>
+
+        <div class="bg-bg-primary rounded-2xl border border-gray-700 p-4 sm:p-6 shadow-[0_20px_70px_rgba(0,0,0,0.22)]">
+            <div class="flex items-start justify-between gap-3 mb-4 flex-wrap">
+                <div>
+                    <h3 class="text-lg font-semibold text-white">Painel de acompanhamento</h3>
+                    <p class="text-sm text-gray-400 mt-1">Arraste os cards, use os botões rápidos ou abra os detalhes para atualizar cada lead.</p>
+                </div>
+                <div id="kanbanCount" class="text-sm text-gray-400"></div>
+            </div>
+
+            <div id="kanbanEmptyState" class="empty-state hidden">
+                <span class="material-icons">view_kanban</span>
+                <p class="text-lg font-medium text-gray-300 mb-1">Ainda não há leads neste painel</p>
+                <p class="text-sm">Faça uma nova busca no Radar ou volte ao Histórico para carregar empresas já salvas.</p>
+            </div>
+
+            <div id="kanbanBoard" class="grid grid-cols-1 xl:grid-cols-4 gap-4"></div>
+        </div>
+    </main>
+
+    <div data-global-footer></div>
+
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script src="src/js/version.js?v=1.0.0"></script>
+    <script src="src/js/global-layout.js?v=1.0.0" defer></script>
+    <script src="src/js/export-import.js?v=1.0.0"></script>
+    <script src="src/js/services/LeadManager.js?v=1.0.0"></script>
+    <script src="src/js/services/SearchHistoryService.js?v=1.0.0"></script>
+    <script src="src/js/services/LeadScoreService.js?v=1.0.0"></script>
+    <script src="src/js/lead-modal.js?v=1.0.0"></script>
+    <script src="src/js/kanban-view.js?v=1.0.0"></script>
+    <script>
+        const tooltipMap = {
+            refreshKanbanBtn: 'Atualiza as colunas e os números do painel com os dados salvos.'
+        };
+
+        Object.entries(tooltipMap).forEach(([id, text]) => {
+            const element = document.getElementById(id);
+            if (!element) return;
+            element.setAttribute('title', text);
+            if (!element.getAttribute('aria-label')) {
+                element.setAttribute('aria-label', text);
+            }
+        });
+    </script>
+    <script src="src/js/header-menu.js?v=1.0.0" defer></script>
+</body>
+</html>

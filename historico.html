@@ -1,0 +1,971 @@
+<!--
+Copyright (C) 2026 Vitor Faustino
+Licensed under the GNU Affero General Public License v3.0.
+This software is provided "as is", without any warranty of any kind.
+The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+to the fullest extent permitted by law.
+See the GNU Affero General Public License for details.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <script src="src/js/access-guard.js?v=1.0.0"></script>
+    <title>Histórico de Consultas — Busca Empresas</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <script src="src/js/tailwind-config.js?v=1.0.0"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/styles.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/design-system.css?v=1.0.0">
+    <link rel="stylesheet" href="src/css/premium-redesign.css?v=1.0.0">
+</head>
+<body class="min-h-screen dark flex flex-col bg-bg-secondary" data-page-view="historico">
+    <div data-global-header></div>
+
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-[88rem]">
+        <section class="history-hero">
+            <span class="section-kicker">
+                <span class="material-icons" style="font-size:18px">history</span>
+                Operação local-first
+            </span>
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mt-3">
+                <div>
+                    <h1 class="hero-title !text-4xl md:!text-5xl">Consulte, filtre e avance seus <span>leads salvos.</span></h1>
+                    <p class="hero-copy !mt-3">Use o Histórico para revisar empresas extraídas, aplicar filtros comerciais e abrir o workspace compartilhado do lead sem sair da base local.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <div class="relative" id="exportDropdownContainer">
+                        <button id="exportDropdownBtn" class="btn-secondary px-4 py-2 rounded-lg flex items-center gap-2 w-fit" title="Exportar os dados visíveis do histórico">
+                            <span class="material-icons" style="font-size:18px">file_download</span>
+                            <span>Exportar</span>
+                            <span class="material-icons" style="font-size:16px">arrow_drop_down</span>
+                        </button>
+                        <div id="exportDropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-[110] overflow-hidden">
+                            <button id="exportCSV" class="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 flex items-center gap-2 transition-colors">
+                                <span class="material-icons" style="font-size:18px">description</span>
+                                Exportar CSV
+                            </button>
+                            <button id="exportJSON" class="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 flex items-center gap-2 transition-colors">
+                                <span class="material-icons" style="font-size:18px">code</span>
+                                Exportar JSON
+                            </button>
+                            <button id="exportPDF" class="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 flex items-center gap-2 transition-colors">
+                                <span class="material-icons" style="font-size:18px">picture_as_pdf</span>
+                                Exportar PDF
+                            </button>
+                        </div>
+                    </div>
+                    <a href="kanban.html" class="btn-secondary px-4 py-2 rounded-lg flex items-center gap-2 w-fit" title="Abrir o painel visual para mover leads entre etapas.">
+                        <span class="material-icons" style="font-size:18px">view_kanban</span>
+                        Ver Kanban
+                    </a>
+                    <a href="index.html" class="btn-primary px-4 py-2 rounded-lg flex items-center gap-2 w-fit" title="Voltar para uma nova busca de empresas.">
+                        <span class="material-icons" style="font-size:18px">travel_explore</span>
+                        Nova extração
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(139,92,246,0.15)">
+                    <span class="material-icons text-purple-400">search</span>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400">Consultas</p>
+                    <p id="statSessions" class="text-xl font-bold text-white">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(59,130,246,0.15)">
+                    <span class="material-icons text-blue-400">business</span>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400">Empresas únicas</p>
+                    <p id="statUnique" class="text-xl font-bold text-white">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(16,185,129,0.15)">
+                    <span class="material-icons text-green-400">check_circle</span>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400">Prospectadas</p>
+                    <p id="statProspected" class="text-xl font-bold text-white">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(245,158,11,0.15)">
+                    <span class="material-icons text-yellow-400">language</span>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400">Sem website</p>
+                    <p id="statNoWebsite" class="text-xl font-bold text-white">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Apenas aba Todas as Empresas -->
+        <div class="bg-bg-primary rounded-xl border border-gray-700 overflow-hidden">
+            <!-- Barra de título -->
+            <div class="flex border-b border-gray-700 px-4 py-3 bg-gray-800">
+                <span class="material-icons text-accent mr-2">business</span>
+                <span class="font-semibold text-white">Todas as Empresas</span>
+            </div>
+
+            <!-- Filtros -->
+            <div id="companyFiltersBar" class="border-b border-gray-700 bg-gray-800">
+                <!-- Linha 1: Busca + Consulta -->
+                <div class="flex flex-wrap gap-2 px-4 pt-3 pb-2 items-center">
+                    <input type="text" id="filterSearch" placeholder="🔍 Buscar por nome, telefone ou endereço..." title="Filtra a lista usando nome da empresa, telefone ou endereço." class="filter-input flex-1 min-w-48">
+                    <div class="filter-select-wrap flex-1 min-w-48">
+                        <select id="filterSession" title="Mostra apenas as empresas vindas de uma busca específica." class="filter-input">
+                            <option value="">Todas as consultas</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Linha 2: Filtros avançados -->
+                <div class="flex flex-wrap gap-2 px-4 pb-3 items-center">
+                    <div class="filter-select-wrap">
+                        <select id="filterStatus" title="Filtra pela marcação de empresa já trabalhada ou não." class="filter-input">
+                            <option value="">Qualquer status</option>
+                            <option value="prospected">✅ Prospectados</option>
+                            <option value="not_prospected">⬜ Não prospectados</option>
+                        </select>
+                    </div>
+                    <div class="filter-select-wrap">
+                        <select id="filterWebsite" title="Separa empresas com site das que ainda não possuem presença própria na web." class="filter-input">
+                            <option value="">Com e sem website</option>
+                            <option value="no_website">🚫 Sem website</option>
+                            <option value="has_website">🌐 Com website</option>
+                        </select>
+                    </div>
+                    <div class="filter-select-wrap">
+                        <select id="filterPhone" title="Mostra apenas empresas com telefone ou sem telefone disponível." class="filter-input">
+                            <option value="">Com e sem telefone</option>
+                            <option value="has_phone">📞 Com telefone</option>
+                            <option value="no_phone">🔇 Sem telefone</option>
+                        </select>
+                    </div>
+                    <div class="filter-select-wrap">
+                        <select id="filterRating" title="Ajuda a priorizar empresas melhor avaliadas no Google." class="filter-input">
+                            <option value="">Qualquer avaliação</option>
+                            <option value="4.5">⭐ 4.5+ estrelas</option>
+                            <option value="4">⭐ 4+ estrelas</option>
+                            <option value="3">⭐ 3+ estrelas</option>
+                        </select>
+                    </div>
+                    <div class="filter-select-wrap">
+                        <select id="filterLeadStatus" title="Filtra pelo estágio comercial que você definiu para o lead." class="filter-input">
+                            <option value="">Qualquer status de lead</option>
+                            <option value="quente">🔥 Quente</option>
+                            <option value="morno">🌡️ Morno</option>
+                            <option value="frio">❄️ Frio</option>
+                        </select>
+                    </div>
+                    <div class="filter-select-wrap">
+                        <select id="filterScore" title="Filtra pela pontuação automática calculada para cada ficha." class="filter-input">
+                            <option value="">Qualquer score da Ficha</option>
+                            <option value="hot">🔴 Alto</option>
+                            <option value="warm">🟡 Médio</option>
+                            <option value="cold">🔵 Baixo</option>
+                        </select>
+                    </div>
+                    <span id="companyCount" class="text-xs font-medium"></span>
+                </div>
+            </div>
+
+            <!-- Conteúdo das Tabs -->
+            <div class="p-4 sm:p-6">
+
+                <!-- Todas as Empresas -->
+                <div id="tabCompanies" class="tab-content space-y-2"></div>
+
+            </div>
+        </div>
+
+        <!-- Rodapé de ações -->
+        <div class="mt-4 flex justify-end">
+            <button id="clearHistoryBtn" class="text-red-400 hover:text-red-300 text-sm flex items-center gap-1.5 transition-colors" title="Apaga consultas e empresas salvas neste navegador.">
+                <span class="material-icons" style="font-size:16px">delete_forever</span>
+                Limpar todo o histórico
+            </button>
+        </div>
+
+    </main>
+
+    <div data-global-footer></div>
+
+    <div id="toastContainer" class="fixed top-4 right-4 space-y-2 z-50 pointer-events-none"></div>
+
+    <script src="src/js/version.js?v=1.0.0"></script>
+    <script src="src/js/global-layout.js?v=1.0.0" defer></script>
+    <script src="src/js/header-menu.js?v=1.0.0" defer></script>
+    <script src="src/js/export-import.js?v=1.0.0"></script>
+    <script src="src/js/services/LeadManager.js?v=1.0.0"></script>
+    <script src="src/js/services/SearchHistoryService.js?v=1.0.0"></script>
+    <script src="src/js/services/LeadScoreService.js?v=1.0.0"></script>
+    <script src="src/js/lead-modal.js?v=1.0.0"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        function esc(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function fmtDate(iso) {
+            if (!iso) return '—';
+            return new Date(iso).toLocaleString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        function safeExternalUrl(rawUrl) {
+            if (!rawUrl) return '';
+
+            const normalizedUrl = /^https?:\/\//i.test(rawUrl)
+                ? rawUrl
+                : `https://${rawUrl}`;
+
+            try {
+                const parsedUrl = new URL(normalizedUrl);
+                return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:'
+                    ? parsedUrl.href
+                    : '';
+            } catch {
+                return '';
+            }
+        }
+
+        function starsHtml(rating) {
+            const r = parseFloat(rating);
+            if (isNaN(r)) return '';
+            const full = Math.floor(r);
+            const half = r - full >= 0.5 ? 1 : 0;
+            const empty = 5 - full - half;
+            return '<span class="stars-display">' +
+                '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty) +
+                `</span> <span class="text-gray-400 text-xs">${r}</span>`;
+        }
+
+        function statusBadge(placeId) {
+            const lm = window.leadManager;
+            if (!lm) return '';
+            const lead = lm.getLead(placeId);
+            if (!lead || !lead.status) return '';
+            const cls = { quente: 'score-hot', morno: 'score-warm', frio: 'score-cold' };
+            return `<span class="badge ${cls[lead.status] || 'badge-gray'}">${LEAD_STATUS_BADGES[lead.status] || lead.status}</span>`;
+        }
+
+        function scoreBadge(placeId) {
+            const svc = window.LeadScoreService;
+            let html = '';
+            // Score automático (Alto/Médio/Baixo)
+            if (svc) {
+                const score = svc.getScore(placeId);
+                if (score) {
+                    const labels = { hot: 'Alto', warm: 'Médio', cold: 'Baixo' };
+                    const cls = { hot: 'score-hot', warm: 'score-warm', cold: 'score-cold' };
+                    html += `<span class="badge ${cls[score.status] || 'badge-gray'}" title="Score automático: ${score.score}pts">${labels[score.status] || score.status} (${score.score}pts)</span>`;
+                }
+            }
+            return html;
+        }
+
+        function download(content, filename, mime) {
+            const blob = new Blob(['\ufeff' + content], { type: mime });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a); URL.revokeObjectURL(url);
+        }
+
+        function toast(msg, type = 'info') {
+            const colors = { info: 'bg-purple-700', success: 'bg-green-700', error: 'bg-red-700' };
+            const el = document.createElement('div');
+            el.className = `pointer-events-auto ${colors[type] || colors.info} text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm`;
+            el.innerHTML = `<span class="material-icons" style="font-size:18px">info</span>${esc(msg)}`;
+            document.getElementById('toastContainer').appendChild(el);
+            setTimeout(() => el.remove(), 3500);
+        }
+
+        const LEAD_STATUS_BADGES = {
+            quente: '🔥 Quente',
+            morno: '🌡️ Morno',
+            frio: '❄️ Frio'
+        };
+
+        // ── Estado ───────────────────────────────────────────────────────────────
+
+        let currentTab = 'companies';
+        let prospectedPlaces = window.StorageManager
+            ? StorageManager.readStoredSet('prospectedPlaces', [])
+            : new Set(JSON.parse(localStorage.getItem('prospectedPlaces') || '[]'));
+        window.prospectedPlaces = prospectedPlaces;
+        let filters = { search: '', status: '', website: '', phone: '', rating: '', leadStatus: '', score: '', sessionId: '' };
+        const companyLookup = new Map();
+
+        function rebuildCompanyLookup(companies) {
+            companyLookup.clear();
+            companies.forEach(company => {
+                if (company && company.placeId) {
+                    companyLookup.set(company.placeId, company);
+                }
+            });
+        }
+
+        function getCompanyByPlaceId(placeId) {
+            if (!placeId) return null;
+            return companyLookup.get(placeId) || null;
+        }
+
+        function getCompanyFromEventTarget(target) {
+            const companyRow = target.closest('.company-row');
+            if (!companyRow) return null;
+            return getCompanyByPlaceId(companyRow.dataset.placeid || '');
+        }
+
+        function saveProspectedPlaces() {
+            if (window.StorageManager) {
+                StorageManager.writeStoredSet('prospectedPlaces', prospectedPlaces);
+            } else {
+                localStorage.setItem('prospectedPlaces', JSON.stringify([...prospectedPlaces]));
+            }
+            window.prospectedPlaces = prospectedPlaces;
+        }
+
+        function ensureLead(company) {
+            const lm = window.leadManager;
+            if (!lm || !company || !company.placeId) return null;
+
+            let lead = lm.getLead(company.placeId);
+            if (!lead) {
+                lead = lm.saveLead(company.placeId, {
+                    nome: company.nome,
+                    endereco: company.endereco,
+                    telefone: company.telefone,
+                    website: company.website,
+                    categoria: company.categoria,
+                    notes: []
+                });
+            }
+            return lead;
+        }
+
+        function toggleProspectedCompany(company) {
+            if (!company || !company.placeId) return false;
+
+            const isProspected = prospectedPlaces.has(company.placeId);
+            if (isProspected) {
+                prospectedPlaces.delete(company.placeId);
+            } else {
+                prospectedPlaces.add(company.placeId);
+                ensureLead(company);
+            }
+
+            saveProspectedPlaces();
+            document.dispatchEvent(new CustomEvent('prospectedStatusChanged', {
+                detail: { placeId: company.placeId, isProspected: !isProspected }
+            }));
+            renderStats();
+            renderCompanies();
+            return !isProspected;
+        }
+
+        // ── Stats ────────────────────────────────────────────────────────────────
+
+        function renderStats() {
+            const svc = window.SearchHistoryService;
+            if (!svc) return;
+            const s = svc.getStats();
+            document.getElementById('statSessions').textContent   = s.totalSessions;
+            document.getElementById('statUnique').textContent     = s.uniqueCompanies;
+            document.getElementById('statProspected').textContent = s.prospectedCount;
+            document.getElementById('statNoWebsite').textContent  = s.noWebsiteCount;
+        }
+
+        // ── Tab: Por Consulta ────────────────────────────────────────────────────
+
+        function renderSessions() {
+            const svc = window.SearchHistoryService;
+            const container = document.getElementById('tabSessions');
+            if (!svc || !container) return;
+
+            const sessions = svc.getAllSessions();
+
+            if (sessions.length === 0) {
+                container.innerHTML = `<div class="empty-state">
+                    <span class="material-icons">history</span>
+                    <p class="text-lg font-medium text-gray-300 mb-1">Nenhuma consulta registrada</p>
+                    <p class="text-sm">Realize uma extração na página principal para começar.</p>
+                    <a href="index.html" class="inline-flex items-center gap-2 mt-4 btn-primary px-4 py-2 rounded-lg text-sm">
+                        <span class="material-icons" style="font-size:16px">search</span>
+                        Ir para Extração
+                    </a>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = sessions.map(session => {
+                const prospectedCount = session.companies.filter(c => prospectedPlaces.has(c.placeId)).length;
+                const noWebsite = session.companies.filter(c => !c.website || c.website === 'Não disponível').length;
+                const withPhone = session.companies.filter(c => c.telefone && c.telefone !== 'Não disponível').length;
+
+                return `
+                <div class="session-card">
+                    <div class="flex justify-between items-start gap-3 flex-wrap">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-wrap gap-1.5 mb-1">
+                                <span class="badge badge-purple">
+                                    <span class="material-icons" style="font-size:11px">search</span>
+                                    ${esc(session.searchTerm || 'Sem termo')}
+                                </span>
+                                ${session.location ? `<span class="badge badge-blue">
+                                    <span class="material-icons" style="font-size:11px">place</span>
+                                    ${esc(session.location)}
+                                </span>` : ''}
+                            </div>
+                            <p class="text-xs text-gray-400">${fmtDate(session.createdAt)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <a href="index.html?session=${esc(session.id)}"
+                               class="text-xs bg-purple-700 hover:bg-purple-600 text-white px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
+                                <span class="material-icons" style="font-size:14px">open_in_new</span>
+                                Carregar
+                            </a>
+                            <button class="btn-delete-session text-gray-500 hover:text-red-400 transition-colors"
+                                data-id="${esc(session.id)}" title="Remover consulta">
+                                <span class="material-icons" style="font-size:20px">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-3 text-xs text-gray-400">
+                        <span class="flex items-center gap-1">
+                            <span class="material-icons text-blue-400" style="font-size:14px">business</span>
+                            ${session.companies.length} empresa${session.companies.length !== 1 ? 's' : ''}
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span class="material-icons text-green-400" style="font-size:14px">check_circle</span>
+                            ${prospectedCount} prospectada${prospectedCount !== 1 ? 's' : ''}
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span class="material-icons text-yellow-400" style="font-size:14px">language</span>
+                            ${noWebsite} sem website
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span class="material-icons text-cyan-400" style="font-size:14px">phone</span>
+                            ${withPhone} com telefone
+                        </span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            container.querySelectorAll('.btn-delete-session').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (confirm('Remover esta consulta do histórico?')) {
+                        window.SearchHistoryService.deleteSession(btn.dataset.id);
+                        refresh();
+                        toast('Consulta removida', 'success');
+                    }
+                });
+            });
+        }
+
+        // ── Tab: Todas as Empresas ───────────────────────────────────────────────
+
+        function applyLocalFilters(companies) {
+            return companies.filter(c => {
+                // Busca por nome/endereço
+                if (filters.search) {
+                    const q = filters.search.toLowerCase();
+                    if (!c.nome.toLowerCase().includes(q) && !(c.endereco || '').toLowerCase().includes(q)) return false;
+                }
+                // Status de prospecção
+                if (filters.status === 'prospected' && !c.isProspected) return false;
+                if (filters.status === 'not_prospected' && c.isProspected) return false;
+                // Website
+                const hasWebsite = c.website && c.website !== 'Não disponível';
+                if (filters.website === 'no_website' && hasWebsite) return false;
+                if (filters.website === 'has_website' && !hasWebsite) return false;
+                // Telefone
+                const hasPhone = c.telefone && c.telefone !== 'Não disponível';
+                if (filters.phone === 'has_phone' && !hasPhone) return false;
+                if (filters.phone === 'no_phone' && hasPhone) return false;
+                // Avaliação
+                if (filters.rating) {
+                    const r = parseFloat(c.avaliacao);
+                    if (isNaN(r) || r < parseFloat(filters.rating)) return false;
+                }
+                // Status do lead (manual)
+                if (filters.leadStatus && window.leadManager) {
+                    const lead = window.leadManager.getLead(c.placeId);
+                    if (!lead || lead.status !== filters.leadStatus) return false;
+                }
+                // Score de lead (automático)
+                if (filters.score && window.LeadScoreService) {
+                    const score = window.LeadScoreService.getScore(c.placeId);
+                    if (!score || score.status !== filters.score) return false;
+                }
+                // Sessão
+                if (filters.sessionId && c.sessionId !== filters.sessionId) return false;
+                return true;
+            });
+        }
+
+        function renderCompanies() {
+            const svc = window.SearchHistoryService;
+            const container = document.getElementById('tabCompanies');
+            if (!svc || !container) return;
+
+            // Obter todas as empresas únicas
+            const allCompanies = svc.getAllCompanies();
+            rebuildCompanyLookup(allCompanies);
+            const companies = applyLocalFilters(allCompanies);
+
+            const countEl = document.getElementById('companyCount');
+            if (countEl) countEl.textContent = `${companies.length} de ${allCompanies.length} empresa${allCompanies.length !== 1 ? 's' : ''}`;
+
+            if (companies.length === 0) {
+                container.innerHTML = `<div class="empty-state"><span class="material-icons">search_off</span><p>Nenhuma empresa encontrada com os filtros aplicados.</p></div>`;
+                return;
+            }
+
+            const displayed = companies.slice(0, 300);
+            const hasMore = companies.length > 300;
+
+            container.innerHTML = `
+                ${hasMore ? `<p class="text-xs text-gray-500 mb-3">Exibindo 300 de ${companies.length} — use os filtros para refinar</p>` : ''}
+                ${displayed.map(c => {
+                    const websiteHref = safeExternalUrl(c.website || '');
+                    const hasWebsite = Boolean(websiteHref) && c.website && c.website !== 'Não disponível';
+                    const hasPhone = c.telefone && c.telefone !== 'Não disponível';
+                    const statusHtml = statusBadge(c.placeId);
+                    const scoreHtml = scoreBadge(c.placeId);
+
+                    return `
+                    <div class="company-row" data-placeid="${esc(c.placeId)}">
+                        <div class="flex-1 min-w-0 cursor-pointer company-row-click">
+                            <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+                                <span class="font-medium text-white text-sm">${esc(c.nome)}</span>
+                                ${c.isProspected ? `<span class="badge badge-green">✅ Prospectado</span>` : ''}
+                                ${!hasWebsite ? `<span class="badge badge-yellow">🚫 Sem website</span>` : ''}
+                                ${!hasPhone ? `<span class="badge badge-gray">🔇 Sem telefone</span>` : ''}
+                                ${statusHtml}
+                                ${scoreHtml}
+                            </div>
+                            <p class="text-xs text-gray-400 truncate">${esc(c.endereco || '—')}</p>
+                            <div class="flex flex-wrap gap-3 mt-1 text-xs text-gray-500">
+                                ${hasPhone ? `<span class="text-cyan-400"><i class="fas fa-phone mr-1"></i>${esc(c.telefone)}</span>` : ''}
+                                ${c.avaliacao && c.avaliacao !== 'Não avaliado' ? `<span>${starsHtml(c.avaliacao)}</span>` : ''}
+                                ${c.totalAvaliacoes && c.totalAvaliacoes !== 'N/A' ? `<span class="text-gray-400">(${esc(c.totalAvaliacoes)} avaliações)</span>` : ''}
+                                <span class="text-purple-400"><i class="fas fa-tag mr-1"></i>${esc(c.sessionTerm || '—')}</span>
+                                <span>${fmtDate(c.sessionDate)}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 flex-shrink-0">
+                            <button class="company-prospect-btn ${c.isProspected ? 'text-green-400' : 'text-gray-400'} hover:text-accent p-1"
+                                title="${c.isProspected ? 'Desmarcar prospectada' : 'Marcar prospectada'}">
+                                <span class="material-icons" style="font-size:18px">${c.isProspected ? 'check_circle' : 'add_circle'}</span>
+                            </button>
+                            ${hasWebsite ? `
+                            <a href="${websiteHref}" target="_blank" rel="noopener noreferrer"
+                                class="text-blue-400 hover:text-blue-300 p-1" title="Abrir website">
+                                <span class="material-icons" style="font-size:18px">language</span>
+                            </a>` : ''}
+                            <button class="company-action-btn text-gray-400 hover:text-accent p-1" title="Ações">
+                                <span class="material-icons" style="font-size:18px">more_vert</span>
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('')}
+            `;
+        }
+
+        // ── Preencher select de sessões ──────────────────────────────────────────
+
+        function populateSessionSelect() {
+            const sel = document.getElementById('filterSession');
+            if (!sel || !window.SearchHistoryService) return;
+            const sessions = window.SearchHistoryService.getAllSessions();
+            sel.innerHTML = '<option value="">Todas as consultas</option>' +
+                sessions.map(s => `<option value="${esc(s.id)}">
+                    ${esc(s.searchTerm || 'Sem termo')} — ${fmtDate(s.createdAt)} (${s.companies.length})
+                </option>`).join('');
+        }
+
+        // ── Refresh geral ────────────────────────────────────────────────────────
+
+        function refresh() {
+            renderStats();
+            populateSessionSelect();
+            renderCompanies();
+        }
+
+        // ── Init ─────────────────────────────────────────────────────────────────
+
+        function init() {
+            // Mostrar filtros por padrão
+            const filtersBar = document.getElementById('companyFiltersBar');
+            if (filtersBar) filtersBar.classList.remove('hidden');
+
+            // Filtros
+            let debounce;
+            const filterSearch = document.getElementById('filterSearch');
+            filterSearch && filterSearch.addEventListener('input', () => {
+                clearTimeout(debounce);
+                debounce = setTimeout(() => { filters.search = filterSearch.value.trim(); renderCompanies(); }, 300);
+            });
+
+            ['filterStatus', 'filterWebsite', 'filterPhone', 'filterRating', 'filterLeadStatus', 'filterScore', 'filterSession'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('change', () => {
+                    const key = id.replace('filter', '').toLowerCase();
+                    filters[key === 'session' ? 'sessionId' : (key === 'leadstatus' ? 'leadStatus' : key)] = el.value;
+                    renderCompanies();
+                });
+            });
+
+            // Toggle dropdown de exportação
+            const exportDropdownBtn = document.getElementById('exportDropdownBtn');
+            const exportDropdownMenu = document.getElementById('exportDropdownMenu');
+
+            function closeExportDropdown() {
+                if (!exportDropdownMenu) {
+                    return;
+                }
+
+                exportDropdownMenu.classList.add('hidden');
+            }
+            
+            if (exportDropdownBtn && exportDropdownMenu) {
+                exportDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const willOpen = exportDropdownMenu.classList.contains('hidden');
+                    if (!willOpen) {
+                        closeExportDropdown();
+                        return;
+                    }
+
+                    exportDropdownMenu.classList.remove('hidden');
+                });
+                
+                // Fechar dropdown ao clicar fora
+                document.addEventListener('click', () => {
+                    closeExportDropdown();
+                });
+            }
+
+            // Função para obter dados filtrados
+            function getFilteredData() {
+                if (!window.SearchHistoryService) return [];
+                const allCompanies = window.SearchHistoryService.getAllCompanies();
+                return applyLocalFilters(allCompanies);
+            }
+
+            // Exportar CSV com filtros
+            document.getElementById('exportCSV') && document.getElementById('exportCSV').addEventListener('click', () => {
+                const filtered = getFilteredData();
+                if (filtered.length === 0) {
+                    toast('Nenhum dado para exportar!', 'error');
+                    return;
+                }
+                const headers = ['Nome','Endereço','Telefone','Website','Avaliação','Total Avaliações','Status Prospecção','Status Lead (Manual)','Score Lead','Pontos Score','Termo de Busca','Localização','Data','Place ID'];
+                const rows = filtered.map(c => {
+                    const lm = window.leadManager;
+                    const lead = lm ? lm.getLead(c.placeId) : null;
+                    const score = window.LeadScoreService ? window.LeadScoreService.getScore(c.placeId) : null;
+                    const statusLabels = { quente: 'Quente', morno: 'Morno', frio: 'Frio' };
+                    const scoreLabels = { hot: 'Alto', warm: 'Médio', cold: 'Baixo' };
+                    return [
+                        `"${(c.nome||'').replace(/"/g,'""')}"`,
+                        `"${(c.endereco||'').replace(/"/g,'""')}"`,
+                        `"${(c.telefone||'').replace(/"/g,'""')}"`,
+                        `"${(c.website||'').replace(/"/g,'""')}"`,
+                        `"${c.avaliacao||''}"`,
+                        `"${c.totalAvaliacoes||''}"`,
+                        `"${c.isProspected ? 'Prospectado' : 'Não prospectado'}"`,
+                        `"${lead && lead.status ? statusLabels[lead.status] || lead.status : ''}"`,
+                        `"${score ? scoreLabels[score.status] || score.status : ''}"`,
+                        `"${score ? score.score : ''}"`,
+                        `"${(c.sessionTerm||'').replace(/"/g,'""')}"`,
+                        `"${(c.sessionLocation||'').replace(/"/g,'""')}"`,
+                        `"${c.sessionDate ? new Date(c.sessionDate).toLocaleDateString('pt-BR') : ''}"`,
+                        `"${c.placeId||''}"`
+                    ].join(',');
+                });
+                download([headers.join(','), ...rows].join('\n'), `historico_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv;charset=utf-8;');
+                toast(`CSV exportado com ${filtered.length} empresas!`, 'success');
+                closeExportDropdown();
+            });
+
+            // Exportar JSON com filtros
+            document.getElementById('exportJSON') && document.getElementById('exportJSON').addEventListener('click', () => {
+                const filtered = getFilteredData();
+                if (filtered.length === 0) {
+                    toast('Nenhum dado para exportar!', 'error');
+                    return;
+                }
+                const exportData = {
+                    exportDate: new Date().toISOString(),
+                    totalCompanies: filtered.length,
+                    filters: filters,
+                    companies: filtered.map(c => {
+                        const lm = window.leadManager;
+                        const lead = lm ? lm.getLead(c.placeId) : null;
+                        const score = window.LeadScoreService ? window.LeadScoreService.getScore(c.placeId) : null;
+                        const statusLabels = { quente: 'Quente', morno: 'Morno', frio: 'Frio' };
+                        const scoreLabels = { hot: 'Alto', warm: 'Médio', cold: 'Baixo' };
+                        return {
+                            ...c,
+                            leadStatus: lead && lead.status ? statusLabels[lead.status] || lead.status : null,
+                            leadScore: score ? scoreLabels[score.status] || score.status : null,
+                            leadScorePoints: score ? score.score : null,
+                            notes: lead && lead.notes ? lead.notes : []
+                        };
+                    })
+                };
+                download(JSON.stringify(exportData, null, 2), `historico_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+                    closeExportDropdown();
+                exportDropdownMenu.classList.add('hidden');
+            });
+
+            // Exportar PDF com filtros
+            document.getElementById('exportPDF') && document.getElementById('exportPDF').addEventListener('click', () => {
+                const filtered = getFilteredData();
+                if (filtered.length === 0) {
+                    toast('Nenhum dado para exportar!', 'error');
+                    return;
+                }
+                
+                const statusLabels = { quente: 'Quente', morno: 'Morno', frio: 'Frio' };
+                const scoreLabels = { hot: 'Alto', warm: 'Médio', cold: 'Baixo' };
+                
+                // Criar conteúdo HTML para PDF
+                let htmlContent = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Relatório de Empresas - Busca Empresas</title>
+                        <style>
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+                            .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #8b5cf6; }
+                            .header h1 { color: #8b5cf6; font-size: 24px; margin-bottom: 5px; }
+                            .header p { color: #666; font-size: 12px; }
+                            .summary { background: #f3f4f6; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+                            .summary h2 { font-size: 14px; color: #374151; margin-bottom: 10px; }
+                            .summary-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+                            .summary-item { font-size: 12px; }
+                            .summary-item strong { color: #8b5cf6; }
+                            table { width: 100%; border-collapse: collapse; font-size: 10px; }
+                            th { background: #8b5cf6; color: white; padding: 8px 5px; text-align: left; font-weight: bold; }
+                            td { padding: 6px 5px; border-bottom: 1px solid #e5e7eb; }
+                            tr:nth-child(even) { background: #f9fafb; }
+                            tr:hover { background: #f3f4f6; }
+                            .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
+                            .badge-hot { background: #fee2e2; color: #dc2626; }
+                            .badge-warm { background: #fef3c7; color: #d97706; }
+                            .badge-cold { background: #dbeafe; color: #2563eb; }
+                            .badge-prospected { background: #d1fae5; color: #059669; }
+                            .badge-no-web { background: #fef3c7; color: #d97706; }
+                            .footer { margin-top: 20px; text-align: center; font-size: 10px; color: #9ca3af; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>📊 Relatório de Empresas</h1>
+                            <p>Busca Empresas - Extraído em ${new Date().toLocaleString('pt-BR')}</p>
+                        </div>
+                        <div class="summary">
+                            <h2>Resumo</h2>
+                            <div class="summary-grid">
+                                <div class="summary-item"><strong>Total:</strong> ${filtered.length} empresas</div>
+                                <div class="summary-item"><strong>Prospectadas:</strong> ${filtered.filter(c => c.isProspected).length}</div>
+                                <div class="summary-item"><strong>Com Website:</strong> ${filtered.filter(c => c.website && c.website !== 'Não disponível').length}</div>
+                                <div class="summary-item"><strong>Com Telefone:</strong> ${filtered.filter(c => c.telefone && c.telefone !== 'Não disponível').length}</div>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>Endereço</th>
+                                    <th>Telefone</th>
+                                    <th>Avaliação</th>
+                                    <th>Status</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                filtered.forEach(c => {
+                    const lm = window.leadManager;
+                    const lead = lm ? lm.getLead(c.placeId) : null;
+                    const score = window.LeadScoreService ? window.LeadScoreService.getScore(c.placeId) : null;
+                    const hasWebsite = c.website && c.website !== 'Não disponível';
+                    
+                    let statusBadges = [];
+                    if (c.isProspected) statusBadges.push('<span class="badge badge-prospected">✅ Prospectado</span>');
+                    if (!hasWebsite) statusBadges.push('<span class="badge badge-no-web">🚫 Sem Web</span>');
+                    if (lead && lead.status) statusBadges.push(`<span class="badge badge-${lead.status === 'quente' ? 'hot' : lead.status === 'morno' ? 'warm' : 'cold'}">${statusLabels[lead.status]}</span>`);
+                    
+                    let scoreBadge = '';
+                    if (score) scoreBadge = `<span class="badge badge-${score.status === 'hot' ? 'hot' : score.status === 'warm' ? 'warm' : 'cold'}">${scoreLabels[score.status]} (${score.score}pts)</span>`;
+                    
+                    htmlContent += `
+                        <tr>
+                            <td><strong>${c.nome || '-'}</strong></td>
+                            <td>${c.endereco || '-'}</td>
+                            <td>${c.telefone || '-'}</td>
+                            <td>${c.avaliacao || '-'} ${c.totalAvaliacoes ? `(${c.totalAvaliacoes})` : ''}</td>
+                            <td>${statusBadges.join(' ')}</td>
+                            <td>${scoreBadge}</td>
+                        </tr>
+                    `;
+                });
+                
+                htmlContent += `
+                            </tbody>
+                        </table>
+                        <div class="footer">
+                            <p>Gerado por Busca Empresas</p>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // Baixar como HTML (o usuário pode imprimir como PDF)
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `relatorio_empresas_${new Date().toISOString().slice(0,10)}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                toast(`PDF exportado com ${filtered.length} empresas! (Salve como PDF no navegador)`, 'success');
+                exportDropdownMenu.classList.add('hidden');
+            });
+
+            // Limpar histórico
+        document.getElementById('clearHistoryBtn') && document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja apagar TODO o histórico de consultas? Esta ação não pode ser desfeita.')) {
+                window.SearchHistoryService && window.SearchHistoryService.clearAll();
+                refresh();
+                toast('Histórico apagado.', 'info');
+            }
+        });
+
+        // Event listeners para clique nas linhas de empresa
+        document.addEventListener('click', function(e) {
+            // Verificar clique na linha da empresa
+            const rowClick = e.target.closest('.company-row-click');
+            if (rowClick) {
+                const company = getCompanyFromEventTarget(rowClick);
+                if (company && window.openCompanyModal) {
+                    window.openCompanyModal(company);
+                }
+            }
+
+            // Verificar clique no botão de ações
+            const actionBtn = e.target.closest('.company-action-btn');
+            if (actionBtn) {
+                e.stopPropagation();
+                const company = getCompanyFromEventTarget(actionBtn);
+                if (company && window.openCompanyModal) {
+                    window.openCompanyModal(company);
+                }
+            }
+
+            const prospectBtn = e.target.closest('.company-prospect-btn');
+            if (prospectBtn) {
+                e.stopPropagation();
+                const company = getCompanyFromEventTarget(prospectBtn);
+                if (company) {
+                    const isProspected = toggleProspectedCompany(company);
+                    toast(isProspected ? 'Empresa marcada como prospectada.' : 'Empresa removida de prospectadas.', 'success');
+                }
+            }
+        });
+
+        // Função global para abrir modal de empresa
+        window.openCompanyModal = function(company) {
+            if (!company || !company.placeId) {
+                return;
+            }
+
+            if (!window.LeadModal || typeof window.LeadModal.open !== 'function') {
+                console.error('LeadModal indisponível em historico.html.');
+                toast('Não foi possível abrir os detalhes agora.', 'error');
+                return;
+            }
+
+            window.LeadModal.open(company, {
+                source: 'history-modal',
+                onChange: () => {
+                    renderStats();
+                    renderCompanies();
+                }
+            });
+        };
+
+        refresh();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const tooltipMap = {
+                exportDropdownBtn: 'Escolha o formato para exportar a base exibida.',
+                filterSearch: 'Busque rapidamente uma empresa pelo nome, telefone ou endereço.',
+                filterSession: 'Filtre por uma consulta específica salva no histórico.',
+                filterStatus: 'Separe empresas já trabalhadas das ainda não trabalhadas.',
+                filterWebsite: 'Mostre apenas empresas com site ou sem site.',
+                filterPhone: 'Mostre apenas empresas com telefone ou sem telefone.',
+                filterRating: 'Priorize empresas por faixa de avaliação.',
+                filterLeadStatus: 'Filtre pela etapa comercial do lead.',
+                filterScore: 'Filtre pela pontuação automática da ficha.'
+            };
+
+            Object.entries(tooltipMap).forEach(([id, text]) => {
+                const element = document.getElementById(id);
+                if (!element) return;
+                element.setAttribute('title', text);
+                if (!element.getAttribute('aria-label')) {
+                    element.setAttribute('aria-label', text);
+                }
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

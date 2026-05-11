@@ -1,0 +1,883 @@
+<!--
+Copyright (C) 2026 Vitor Faustino
+Licensed under the GNU Affero General Public License v3.0.
+This software is provided "as is", without any warranty of any kind.
+The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+to the fullest extent permitted by law.
+See the GNU Affero General Public License for details.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex">
+    <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <title>Ajuda - Busca Empresas</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/premium-redesign.css?v=1.0.0">
+    <style>
+        :root {
+            --help-bg: radial-gradient(circle at top left, rgba(34, 211, 238, 0.14), transparent 26%), radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 24%), #050816;
+            --help-panel: rgba(10, 15, 28, 0.78);
+            --help-border: rgba(148, 163, 184, 0.16);
+            --help-text-soft: #94a3b8;
+            --help-cyan: #67e8f9;
+            --help-amber: #fbbf24;
+            --help-green: #4ade80;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--help-bg);
+            color: #e5eefb;
+        }
+
+        .help-shell {
+            max-width: 88rem;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+        }
+
+        .help-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .help-sidebar,
+        .help-card,
+        .help-hero-panel,
+        .help-highlight,
+        .help-step,
+        .help-price-box {
+            background: var(--help-panel);
+            border: 1px solid var(--help-border);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+        }
+
+        .help-sidebar {
+            position: sticky;
+            top: 5.8rem;
+            border-radius: 28px;
+            padding: 1.25rem;
+        }
+
+        .help-sidebar-title {
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--help-text-soft);
+            margin-bottom: 0.85rem;
+        }
+
+        .help-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-radius: 16px;
+            padding: 0.9rem 1rem;
+            color: #d7e4f3;
+            text-decoration: none;
+            transition: 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .help-nav-link:hover,
+        .help-nav-link.active {
+            border-color: rgba(103, 232, 249, 0.28);
+            background: rgba(14, 116, 144, 0.16);
+            color: white;
+        }
+
+        .help-nav-link .material-icons {
+            color: var(--help-cyan);
+            font-size: 18px;
+        }
+
+        .help-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .help-hero-panel {
+            border-radius: 32px;
+            padding: 1.6rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .help-hero-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.12), transparent 35%, rgba(251, 191, 36, 0.1));
+            pointer-events: none;
+        }
+
+        .help-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(103, 232, 249, 0.32);
+            background: rgba(8, 47, 73, 0.42);
+            padding: 0.55rem 0.85rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--help-cyan);
+        }
+
+        .help-hero-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.85fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .help-hero-title {
+            font-size: clamp(2.2rem, 4vw, 4.2rem);
+            line-height: 0.98;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: white;
+        }
+
+        .help-hero-title span {
+            color: var(--help-cyan);
+        }
+
+        .help-hero-copy {
+            margin-top: 1rem;
+            max-width: 760px;
+            color: #c2cfdf;
+            font-size: 1.02rem;
+            line-height: 1.75;
+        }
+
+        .help-highlight-list {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .help-highlight {
+            border-radius: 22px;
+            padding: 1rem;
+        }
+
+        .help-highlight strong {
+            display: block;
+            font-size: 0.92rem;
+            color: white;
+            margin-bottom: 0.3rem;
+        }
+
+        .help-highlight p {
+            color: var(--help-text-soft);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .help-section {
+            scroll-margin-top: 6rem;
+        }
+
+        .help-card {
+            border-radius: 28px;
+            padding: 1.5rem;
+        }
+
+        .help-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .help-section-heading .material-icons {
+            color: var(--help-cyan);
+        }
+
+        .help-section-heading h2 {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .help-section-intro {
+            color: #c2cfdf;
+            line-height: 1.75;
+            margin-bottom: 1.2rem;
+        }
+
+        .help-grid-2,
+        .help-grid-3 {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .help-grid-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .help-grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .help-mini-card {
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(15, 23, 42, 0.72);
+            padding: 1rem;
+        }
+
+        .help-mini-card strong {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: white;
+        }
+
+        .help-mini-card p,
+        .help-mini-card li {
+            color: var(--help-text-soft);
+            font-size: 0.93rem;
+            line-height: 1.6;
+        }
+
+        .help-list {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .help-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            border-radius: 18px;
+            background: rgba(15, 23, 42, 0.54);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            padding: 0.95rem 1rem;
+        }
+
+        .help-list-item .material-icons {
+            color: var(--help-amber);
+            font-size: 18px;
+            margin-top: 0.1rem;
+        }
+
+        .help-list-item strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: white;
+        }
+
+        .help-list-item p {
+            color: var(--help-text-soft);
+            font-size: 0.93rem;
+            line-height: 1.65;
+        }
+
+        .help-score-row {
+            display: grid;
+            grid-template-columns: minmax(170px, 0.9fr) minmax(110px, 0.35fr) minmax(0, 1.6fr);
+            gap: 0.8rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+            padding: 0.9rem 0;
+        }
+
+        .help-score-row:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .help-score-row strong {
+            color: white;
+        }
+
+        .help-score-row span,
+        .help-score-row p {
+            color: var(--help-text-soft);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .help-points {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid rgba(103, 232, 249, 0.24);
+            background: rgba(8, 47, 73, 0.38);
+            padding: 0.3rem 0.7rem;
+            color: var(--help-cyan);
+            font-weight: 700;
+            font-size: 0.86rem;
+        }
+
+        .help-level {
+            border-radius: 22px;
+            padding: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            background: rgba(15, 23, 42, 0.72);
+        }
+
+        .help-level h3 {
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.4rem;
+        }
+
+        .help-level p {
+            color: var(--help-text-soft);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .help-level-high {
+            border-color: rgba(248, 113, 113, 0.3);
+            background: rgba(127, 29, 29, 0.18);
+        }
+
+        .help-level-medium {
+            border-color: rgba(245, 158, 11, 0.28);
+            background: rgba(120, 53, 15, 0.18);
+        }
+
+        .help-level-low {
+            border-color: rgba(96, 165, 250, 0.24);
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .help-price-box {
+            border-radius: 24px;
+            padding: 1.2rem;
+        }
+
+        .help-calc {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .help-calc-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            color: #dbe7f5;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+            padding-bottom: 0.7rem;
+        }
+
+        .help-calc-row:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .help-calc-total {
+            color: var(--help-green);
+            font-weight: 700;
+        }
+
+        .help-step {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1fr);
+            gap: 1rem;
+            border-radius: 24px;
+            padding: 1.15rem;
+        }
+
+        .help-step-index {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.26), rgba(59, 130, 246, 0.34));
+            color: white;
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .help-step h3 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 0.45rem;
+        }
+
+        .help-step p,
+        .help-step li {
+            color: var(--help-text-soft);
+            font-size: 0.94rem;
+            line-height: 1.65;
+        }
+
+        .help-inline-note {
+            margin-top: 0.65rem;
+            border-left: 3px solid rgba(103, 232, 249, 0.52);
+            padding-left: 0.8rem;
+            color: #d9e6f6;
+        }
+
+        .help-footer {
+            text-align: center;
+            color: var(--help-text-soft);
+            font-size: 0.88rem;
+            padding: 1.2rem 0 0.2rem;
+        }
+
+        @media (max-width: 1080px) {
+            .help-layout,
+            .help-hero-grid,
+            .help-grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .help-sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .help-grid-2,
+            .help-score-row {
+                grid-template-columns: 1fr;
+            }
+
+            .help-shell {
+                padding-inline: 0.85rem;
+            }
+
+            .help-hero-panel,
+            .help-card,
+            .help-sidebar {
+                border-radius: 24px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen" data-page-view="help">
+    <div data-global-header></div>
+
+    <div class="help-shell">
+        <div class="help-layout">
+            <aside class="help-sidebar">
+                <div class="help-sidebar-title">Guia desta página</div>
+                <nav class="space-y-2">
+                    <a href="#primeiros-passos" class="help-nav-link">
+                        <span class="material-icons">school</span>
+                        <span>Primeiros passos</span>
+                    </a>
+                    <a href="#score" class="help-nav-link">
+                        <span class="material-icons">stacked_bar_chart</span>
+                        <span>Como ler o score</span>
+                    </a>
+                    <a href="#custos" class="help-nav-link">
+                        <span class="material-icons">payments</span>
+                        <span>Custos e cobrança</span>
+                    </a>
+                    <a href="#api" class="help-nav-link">
+                        <span class="material-icons">vpn_key</span>
+                        <span>Criar a chave API</span>
+                    </a>
+                    <a href="#seguranca" class="help-nav-link">
+                        <span class="material-icons">shield</span>
+                        <span>Segurança e backup</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="help-main">
+                <section class="help-hero-panel">
+                    <span class="help-kicker">
+                        <span class="material-icons" style="font-size:18px">support_agent</span>
+                        Aprenda a operar a ferramenta
+                    </span>
+                    <div class="help-hero-grid">
+                        <div>
+                            <h1 class="help-hero-title">Tudo o que você precisa para <span>buscar, filtrar e acompanhar</span> empresas.</h1>
+                            <p class="help-hero-copy">Esta página foi reorganizada para servir como guia prático. Em vez de termos técnicos soltos, você encontra o que fazer em cada etapa: configurar a busca, entender a pontuação, prever custo, criar a chave do Google e manter seus dados protegidos neste navegador.</p>
+                        </div>
+                        <div class="help-highlight-list">
+                            <div class="help-highlight">
+                                <strong>Antes da primeira busca</strong>
+                                <p>Tenha uma chave API ativa, escolha um segmento claro e defina um volume de coleta compatível com seu orçamento.</p>
+                            </div>
+                            <div class="help-highlight">
+                                <strong>Durante a análise</strong>
+                                <p>Use o Histórico para filtrar a base e o Kanban para mover os leads entre etapas de atendimento.</p>
+                            </div>
+                            <div class="help-highlight">
+                                <strong>Para evitar surpresas</strong>
+                                <p>Monitore a cobrança da API, mantenha backups e trate a chave como um dado sensível do seu navegador.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="primeiros-passos" class="help-section help-card">
+                    <div class="help-section-heading">
+                        <span class="material-icons">school</span>
+                        <h2>Primeiros passos sem dúvida</h2>
+                    </div>
+                    <p class="help-section-intro">Se você está começando agora, siga esta sequência simples. Ela reduz erro de configuração e evita gastar chamadas da API com buscas vagas demais.</p>
+                    <div class="help-grid-3">
+                        <div class="help-mini-card">
+                            <strong>1. Defina um segmento específico</strong>
+                            <p>Buscas como "restaurantes japoneses" ou "clínicas odontológicas" tendem a gerar listas mais úteis do que termos muito amplos como "comércio".</p>
+                        </div>
+                        <div class="help-mini-card">
+                            <strong>2. Comece com poucas fichas</strong>
+                            <p>Use um volume menor na primeira rodada para validar a qualidade da busca antes de partir para lotes maiores.</p>
+                        </div>
+                        <div class="help-mini-card">
+                            <strong>3. Revise antes de prospectar</strong>
+                            <p>Abra os detalhes da empresa, confirme telefone, site, avaliação e registre uma nota antes do primeiro contato.</p>
+                        </div>
+                    </div>
+                    <div class="help-list mt-4">
+                        <div class="help-list-item">
+                            <span class="material-icons">travel_explore</span>
+                            <div>
+                                <strong>Radar</strong>
+                                <p>É onde a busca acontece. Você define o que procurar, onde procurar e quantas fichas deseja coletar.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">history</span>
+                            <div>
+                                <strong>Histórico</strong>
+                                <p>É a lista completa das empresas já encontradas. Use esta área quando precisar filtrar, exportar ou revisar uma consulta antiga.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">view_kanban</span>
+                            <div>
+                                <strong>Kanban</strong>
+                                <p>É o painel visual para organizar a próxima ação do lead. Ideal para mover empresas entre prioridade baixa, acompanhamento e prioridade alta.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="score" class="help-section help-card">
+                    <div class="help-section-heading">
+                        <span class="material-icons">stacked_bar_chart</span>
+                        <h2>Como ler o score de cada empresa</h2>
+                    </div>
+                    <p class="help-section-intro">A pontuação ajuda a ordenar a base com base em sinais públicos da ficha da empresa. Ela não substitui sua análise comercial, mas acelera a triagem inicial e destaca oportunidades mais completas.</p>
+                    <div class="space-y-1">
+                        <div class="help-score-row">
+                            <strong>Avaliação no Google</strong>
+                            <span class="help-points">25 pts</span>
+                            <p>Empresas melhor avaliadas costumam indicar operação ativa e boa percepção do cliente.</p>
+                        </div>
+                        <div class="help-score-row">
+                            <strong>Quantidade de avaliações</strong>
+                            <span class="help-points">20 pts</span>
+                            <p>Mais avaliações significam mais histórico público. Isso ajuda a priorizar empresas com presença mais consolidada.</p>
+                        </div>
+                        <div class="help-score-row">
+                            <strong>Site próprio</strong>
+                            <span class="help-points">15 pts</span>
+                            <p>Ter website facilita contato, análise da oferta e leitura da maturidade digital da empresa.</p>
+                        </div>
+                        <div class="help-score-row">
+                            <strong>Telefone disponível</strong>
+                            <span class="help-points">10 pts</span>
+                            <p>Ajuda no contato rápido e reduz esforço operacional para iniciar a abordagem.</p>
+                        </div>
+                        <div class="help-score-row">
+                            <strong>Endereço mais completo</strong>
+                            <span class="help-points">10 pts</span>
+                            <p>Fichas melhor preenchidas tendem a ser mais confiáveis e mais fáceis de validar antes do contato.</p>
+                        </div>
+                        <div class="help-score-row">
+                            <strong>Fotos e horários</strong>
+                            <span class="help-points">10 pts</span>
+                            <p>Esses dados ajudam a identificar empresas com ficha mais ativa e presença pública mais cuidada.</p>
+                        </div>
+                        <div class="help-score-row">
+                            <strong>Categoria do negócio</strong>
+                            <span class="help-points">10 pts</span>
+                            <p>Algumas categorias recebem prioridade por costumarem ter maior valor comercial ou maior recorrência de contato.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-grid-3 mt-5">
+                        <div class="help-level help-level-high">
+                            <h3>Prioridade alta</h3>
+                            <p>Score igual ou acima de 70. Vale revisar primeiro, definir próxima ação e considerar abordagem mais rápida.</p>
+                        </div>
+                        <div class="help-level help-level-medium">
+                            <h3>Em acompanhamento</h3>
+                            <p>Score entre 40 e 69. Geralmente são boas empresas para trabalhar em sequência, com nota e lembrete de retorno.</p>
+                        </div>
+                        <div class="help-level help-level-low">
+                            <h3>Baixa prioridade</h3>
+                            <p>Score abaixo de 40. Nem sempre deve ser descartado, mas costuma pedir análise manual antes de investir tempo.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-list mt-5">
+                        <div class="help-list-item">
+                            <span class="material-icons">edit_note</span>
+                            <div>
+                                <strong>O score organiza, mas nao decide sozinho</strong>
+                                <p>Se você encontrou uma empresa promissora com score menor, ajuste a etapa manualmente no Histórico ou no Kanban e registre o motivo na nota.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custos" class="help-section help-card">
+                    <div class="help-section-heading">
+                        <span class="material-icons">payments</span>
+                        <h2>Como a cobrança da API realmente acontece</h2>
+                    </div>
+                    <p class="help-section-intro">A cobrança do Google acontece por requisição. Em termos práticos, você paga pela busca inicial e também pelos detalhes de cada empresa retornada. Quanto mais fichas pedir, maior tende a ser o custo final.</p>
+
+                    <div class="help-list mb-5">
+                        <div class="help-list-item">
+                            <span class="material-icons">filter_alt</span>
+                            <div>
+                                <strong>Como os filtros funcionam hoje na extração</strong>
+                                <p>Na implementação atual, filtros como com website, sem website, com telefone, 4+ estrelas e 50+ avaliações funcionam depois que o lote da busca já voltou da API. Eles ajudam a triagem visual do resultado, mas não entram como regra nativa da requisição enviada ao Google.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">history</span>
+                            <div>
+                                <strong>O que isso significa para o Histórico</strong>
+                                <p>Hoje a sessão salva no Histórico ainda reflete o lote bruto retornado pela busca. Por isso, uma busca pedindo 10 empresas sem website pode exibir menos correspondências na tela e, ao mesmo tempo, registrar no Histórico empresas que não atendem a esse critério.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">info</span>
+                            <div>
+                                <strong>Impacto no custo atual</strong>
+                                <p>Como esses filtros não são enviados como regra da busca, eles não economizam diretamente as chamadas iniciais da API na versão atual. O ganho hoje é de leitura local do lote retornado, não de redução garantida da coleta.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-grid-3">
+                        <div class="help-price-box">
+                            <strong class="block text-white mb-2">Busca inicial</strong>
+                            <p class="text-sm text-slate-300 leading-6">Usa requisições de busca por texto ou localização para encontrar empresas candidatas.</p>
+                            <p class="mt-3 text-sm text-cyan-200">Referência usada nesta página: US$ 32 a US$ 40 por 1000 requisições.</p>
+                        </div>
+                        <div class="help-price-box">
+                            <strong class="block text-white mb-2">Detalhes da empresa</strong>
+                            <p class="text-sm text-slate-300 leading-6">Cada ficha aberta para completar telefone, site, endereço, avaliações e outros dados públicos gera nova cobrança.</p>
+                            <p class="mt-3 text-sm text-cyan-200">Referência usada nesta página: US$ 17 por 1000 requisições.</p>
+                        </div>
+                        <div class="help-price-box">
+                            <strong class="block text-white mb-2">Fotos</strong>
+                            <p class="text-sm text-slate-300 leading-6">Fotos podem gerar custo extra. Como seu pedido foi sem fotos, o exemplo abaixo exclui totalmente essa parte.</p>
+                            <p class="mt-3 text-sm text-cyan-200">Referência usada nesta página: US$ 7 por 1000 requisições, quando ativado.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-price-box mt-5">
+                        <strong class="block text-white text-lg">Exemplo realista: extraindo 1000 fichas sem fotos</strong>
+                        <p class="mt-2 text-sm text-slate-300 leading-6">Usando os valores de referência acima e considerando uma coleta grande com paginação até chegar perto de 1000 empresas, um cenário razoável fica assim:</p>
+                        <div class="help-calc">
+                            <div class="help-calc-row">
+                                <span>17 requisições de busca x US$ 0,040 por requisição</span>
+                                <strong>US$ 0,68</strong>
+                            </div>
+                            <div class="help-calc-row">
+                                <span>1000 requisições de detalhes x US$ 0,017 por ficha</span>
+                                <strong>US$ 17,00</strong>
+                            </div>
+                            <div class="help-calc-row help-calc-total">
+                                <span>Total estimado sem fotos</span>
+                                <strong>US$ 17,68</strong>
+                            </div>
+                        </div>
+                        <p class="help-inline-note">Esse valor é uma simulação didática baseada nos preços de referência mostrados nesta página. O custo real pode variar conforme a API usada, a quantidade efetiva de páginas retornadas, mudanças de preço do Google e os campos solicitados em cada ficha.</p>
+                    </div>
+
+                    <div class="help-list mt-5">
+                        <div class="help-list-item">
+                            <span class="material-icons">savings</span>
+                            <div>
+                                <strong>Como gastar menos</strong>
+                                <p>Comece com um raio menor, use menos fichas por busca e valide a qualidade do segmento antes de rodar extrações grandes.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">credit_card</span>
+                            <div>
+                                <strong>Credito mensal</strong>
+                                <p>O Google costuma oferecer credito mensal para Maps e Places, mas isso pode mudar. Confira a conta do Google Cloud antes de usar em volume.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="api" class="help-section help-card">
+                    <div class="help-section-heading">
+                        <span class="material-icons">vpn_key</span>
+                        <h2>Como criar e ativar sua chave API</h2>
+                    </div>
+                    <p class="help-section-intro">Sem a chave API, o Radar não consegue buscar empresas. O processo abaixo foi escrito para quem nunca configurou Google Cloud antes.</p>
+
+                    <div class="space-y-4">
+                        <div class="help-step">
+                            <div class="help-step-index">1</div>
+                            <div>
+                                <h3>Entre no Google Cloud Console</h3>
+                                <p>Acesse <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" class="text-cyan-300 hover:underline">console.cloud.google.com</a> com sua conta Google.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-index">2</div>
+                            <div>
+                                <h3>Crie um projeto dedicado</h3>
+                                <p>Use um projeto separado para esta ferramenta. Isso facilita controlar faturamento, limites e alertas.</p>
+                                <p class="help-inline-note">Sugestão simples de nome: Busca Empresas Local.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-index">3</div>
+                            <div>
+                                <h3>Ative as APIs necessarias</h3>
+                                <p>No menu APIs e Serviços, ative pelo menos estas duas APIs:</p>
+                                <ul class="list-disc ml-5 mt-2 space-y-1">
+                                    <li>Places API</li>
+                                    <li>Maps JavaScript API</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-index">4</div>
+                            <div>
+                                <h3>Crie a chave</h3>
+                                <p>Em Credenciais, clique em Criar credenciais e depois em Chave de API. Copie a chave gerada.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-index">5</div>
+                            <div>
+                                <h3>Restrinja a chave com cuidado</h3>
+                                <p>Limite o uso da chave às APIs realmente usadas. Sempre que operar em localhost ou domínio próprio, prefira restrição por HTTP referrer para reduzir risco de uso indevido.</p>
+                                <p class="help-inline-note">Se você abrir a ferramenta diretamente por file://, valide essa restrição antes. Alguns navegadores não fornecem um referrer útil nesse cenário. Para uso local puro, é mais seguro trabalhar com uma chave separada, de baixo limite e com alerta de faturamento ativo.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-index">6</div>
+                            <div>
+                                <h3>Ative o faturamento</h3>
+                                <p>Sem faturamento ativo, a API pode não responder. Configure também alertas de custo no Google Cloud para não ser surpreendido em coletas maiores.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-index">7</div>
+                            <div>
+                                <h3>Cole a chave no Busca Empresas</h3>
+                                <p>Abra a ferramenta, insira a chave no campo indicado e valide. Depois disso, o navegador passa a usar essa chave nas buscas locais.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="seguranca" class="help-section help-card">
+                    <div class="help-section-heading">
+                        <span class="material-icons">shield</span>
+                        <h2>Segurança, restore e rotina de uso</h2>
+                    </div>
+                    <p class="help-section-intro">Como este projeto roda totalmente no navegador, a proteção é local e de redução de risco. O objetivo é dificultar abuso e evitar perda de dados, não prometer sigilo absoluto dentro do navegador.</p>
+                    <div class="help-grid-2">
+                        <div class="help-mini-card">
+                            <strong>PIN local</strong>
+                            <p>Use um PIN forte para proteger a abertura do cofre local e o backup seguro exportado pela ferramenta.</p>
+                        </div>
+                        <div class="help-mini-card">
+                            <strong>Backup manual</strong>
+                            <p>Exporte sua base antes de mudanças maiores, principalmente se você trabalha com muitos leads no histórico ou no Kanban.</p>
+                        </div>
+                        <div class="help-mini-card">
+                            <strong>Auto backup</strong>
+                            <p>Quando disponível no navegador, ele ajuda a recuperar a base caso o armazenamento principal se perca.</p>
+                        </div>
+                        <div class="help-mini-card">
+                            <strong>Chave separada</strong>
+                            <p>Não reutilize a mesma chave em vários projetos. Isso facilita revogação e limita o impacto de qualquer vazamento.</p>
+                        </div>
+                    </div>
+                    <div class="help-list mt-5">
+                        <div class="help-list-item">
+                            <span class="material-icons">warning_amber</span>
+                            <div>
+                                <strong>O que significa "precisam de retorno" no Kanban</strong>
+                                <p>Esse indicador mostra leads com próxima ação vencida. Em termos práticos, é um alerta para revisar quem ficou sem retorno no prazo planejado.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">archive</span>
+                            <div>
+                                <strong>Quando exportar a base</strong>
+                                <p>Antes de limpar histórico, antes de importar outro backup e sempre que encerrar uma rodada importante de prospecção.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="help-footer">
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div data-global-footer></div>
+
+    <script src="src/js/version.js?v=1.0.0"></script>
+    <script src="src/js/global-layout.js?v=1.0.0" defer></script>
+    <script src="src/js/header-menu.js?v=1.0.0" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = Array.from(document.querySelectorAll('.help-nav-link'));
+            const sections = links
+                .map(link => document.querySelector(link.getAttribute('href')))
+                .filter(Boolean);
+
+            const activateCurrentSection = () => {
+                const threshold = window.scrollY + 140;
+                let activeId = sections[0]?.id || '';
+
+                sections.forEach(section => {
+                    if (section.offsetTop <= threshold) {
+                        activeId = section.id;
+                    }
+                });
+
+                links.forEach(link => {
+                    const isActive = link.getAttribute('href') === `#${activeId}`;
+                    link.classList.toggle('active', isActive);
+                    link.setAttribute('aria-current', isActive ? 'true' : 'false');
+                });
+            };
+
+            activateCurrentSection();
+            window.addEventListener('scroll', activateCurrentSection, { passive: true });
+        });
+    </script>
+</body>
+</html>

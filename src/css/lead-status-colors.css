@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2026 Vitor Faustino
+ * Licensed under the GNU Affero General Public License v3.0.
+ * This software is provided "as is", without any warranty of any kind.
+ * The author disclaims liability for damages and inaccurate AI-generated or AI-assisted results,
+ * to the fullest extent permitted by law.
+ * See the GNU Affero General Public License for details.
+ */
+
+/* Estilos para os botões de status do lead */
+
+/* Cores específicas para cada status quando ativos */
+.lead-status-btn[data-status="quente"].active {
+    background-color: #FF5733 !important; /* Laranja avermelhado */
+    border-color: #FF5733 !important;
+    color: white !important;
+}
+
+.lead-status-btn[data-status="morno"].active {
+    background-color: #FFD700 !important; /* Amarelo */
+    border-color: #FFD700 !important;
+    color: #333 !important; /* Texto escuro para melhor contraste com fundo amarelo */
+}
+
+.lead-status-btn[data-status="frio"].active {
+    background-color: #3498DB !important; /* Azul */
+    border-color: #3498DB !important;
+    color: white !important;
+}
+
+/* Efeito hover com as mesmas cores, mas com transparência */
+.lead-status-btn[data-status="quente"]:hover {
+    background-color: rgba(255, 87, 51, 0.8) !important;
+    border-color: #FF5733 !important;
+    color: white !important;
+}
+
+.lead-status-btn[data-status="morno"]:hover {
+    background-color: rgba(255, 215, 0, 0.8) !important;
+    border-color: #FFD700 !important;
+    color: #333 !important;
+}
+
+.lead-status-btn[data-status="frio"]:hover {
+    background-color: rgba(52, 152, 219, 0.8) !important;
+    border-color: #3498DB !important;
+    color: white !important;
+}
+
+/* Estilo padrão para botões não especificados */
+.lead-status-btn.active:not([data-status="quente"]):not([data-status="morno"]):not([data-status="frio"]) {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+    color: white !important;
+}
