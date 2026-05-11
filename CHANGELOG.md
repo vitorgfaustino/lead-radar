@@ -23,6 +23,11 @@ O formato segue a ideia de `Keep a Changelog`, adaptado ao contexto atual do rep
 - O menu das páginas principais agora é global e consistente, com configurações centralizadas em um único ponto e rodapé compartilhado com ano dinâmico e versão vinda de `src/js/version.js`.
 - O antigo atalho de backup do topo foi convertido em central de configurações no Radar, reunindo API, ajuda, backup, restauração e segurança na mesma tela.
 - O site agora exibe um alerta visual quando a API do Google ainda não está configurada ou destravada na sessão atual.
+- O fluxo de `Primeiro uso` agora atualiza o alerta de conexão da API imediatamente após salvar a chave, sem exigir recarga manual da página para reconhecer a sessão.
+- O dropdown `Exportar` do Histórico agora abre acima dos cards de métricas, permitindo clicar normalmente em CSV, JSON e PDF sem o menu ficar encoberto pela seção de estatísticas.
+- O relatório preparado para PDF no Histórico foi redesenhado com identidade azul-escura, resumo executivo, campos do CRM por lead e bloco final com ano, versão, licença e link do repositório.
+- O workspace compartilhado do lead agora abre com `Resumo` fechado por padrão, remove o score duplicado dessa seção, move `Ações rápidas` para o fim da coluna direita e força o date picker dos campos de acompanhamento a respeitar o tema escuro.
+- O resumo do lead deixou de repetir a ficha do Google, e os indicadores do Histórico passaram a usar badges compactos com fundo suave no padrão visual do restante da interface.
 - O painel `AUTO Local` passou a usar destaque azul do tema quando o auto backup está ativo, reduzindo ambiguidade visual no modal de configurações.
 - O carregamento da Maps JavaScript API passou a usar `loading=async`, reduzindo o warning de bootstrap síncrono no console.
 - O registro do `Service Worker` agora é ignorado em `file://`, evitando erro de runtime fora de `http/https` e deixando claro que cache offline deve ser testado em `localhost`.

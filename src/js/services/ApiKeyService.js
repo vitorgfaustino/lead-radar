@@ -19,6 +19,19 @@ class ApiKeyService {
     static API_LOADED = false;
     static securityService = null;
 
+    static _dispatchApiStateChange() {
+        if (typeof window === 'undefined' || typeof window.dispatchEvent !== 'function' || typeof CustomEvent === 'undefined') {
+            return;
+        }
+
+        window.dispatchEvent(new CustomEvent('leadradar:api-state-changed', {
+            detail: {
+                connected: Boolean(sessionStorage.getItem(this.SESSION_UNLOCK_KEY)),
+                hasStoredVault: this.hasStoredApiKey()
+            }
+        }));
+    }
+
     /**
      * Inicializa o serviço de segurança se necessário
      * @private
@@ -104,6 +117,8 @@ class ApiKeyService {
             await StorageManager.saveInstallationPinVerifier(pin);
         }
 
+        this._dispatchApiStateChange();
+
         return apiKey;
     }
 
@@ -141,6 +156,8 @@ class ApiKeyService {
             if (window.StorageManager && typeof StorageManager.hasInstallationPinVerifier === 'function' && typeof StorageManager.saveInstallationPinVerifier === 'function' && !StorageManager.hasInstallationPinVerifier()) {
                 await StorageManager.saveInstallationPinVerifier(pin);
             }
+
+            this._dispatchApiStateChange();
         }
 
         return apiKey;
@@ -156,6 +173,7 @@ class ApiKeyService {
         this.clearSessionPin();
         
         this.API_LOADED = false;
+        this._dispatchApiStateChange();
         
         // Remover script do Google Maps
         const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');

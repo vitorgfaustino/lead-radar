@@ -125,8 +125,8 @@ Recursos já disponíveis:
 - Cards do Kanban em `Sem status` agora podem ser movidos normalmente para outras colunas, mesmo quando o lead ainda não possuía registro persistido em `leads`.
 - O modal de senha do cofre foi reduzido e centralizado, e a tecla Enter confirma a senha diretamente no diálogo.
 - Os filtros dropdown do Histórico receberam acabamento visual para ficar mais legíveis e consistentes com o restante da interface.
-- O menu `Exportar` do Histórico agora abre ancorado no próprio botão, no mesmo ponto da ação, com sobreposição correta sobre a interface; os filtros também ganharam setas visíveis para reforçar que são dropdowns.
-- O workspace compartilhado do lead agora pagina a timeline de atividades com rolagem interna, sem deixar o modal crescer indefinidamente, padroniza melhor as superfícies dos campos, chips de score e destaques da ficha extraída, organiza Resumo, Etiquetas, Notas e Atividades em blocos expansíveis, reabre esses blocos no mesmo estado em que o usuário os deixou na última interação, mostra um resumo compacto de acompanhamento e serve como fluxo único de detalhes no Radar, Histórico e Kanban.
+- O menu `Exportar` do Histórico agora abre ancorado no próprio botão, no mesmo ponto da ação, com sobreposição correta sobre a interface; os filtros também ganharam setas visíveis para reforçar que são dropdowns, e o relatório preparado para PDF passou a incluir campos do CRM e os metadados visíveis do produto.
+- O workspace compartilhado do lead agora pagina a timeline de atividades com rolagem interna, sem deixar o modal crescer indefinidamente, padroniza melhor as superfícies dos campos, chips de score e destaques da ficha extraída, organiza Resumo, Etiquetas, Notas e Atividades em blocos expansíveis, inicia com `Resumo` fechado por padrão, move `Ações rápidas` para o fim da coluna direita, mostra um resumo compacto de acompanhamento e serve como fluxo único de detalhes no Radar, Histórico e Kanban.
 
 ## Comportamento Atual da Extração e da API
 
@@ -194,7 +194,7 @@ Esses campos continuam dentro da mesma chave persistida `leads`, sem criar um se
 Entrega atual desta onda no CRM:
 
 - modal do lead com notas, tags, próxima ação e timeline local de atividades
-- workspace compartilhado do lead com campos visuais padronizados, destaque suave por etapa/score, timeline recente paginada, resumo compacto de acompanhamento, seções expansíveis para Resumo, Etiquetas, Notas e Atividades, preservando o último estado aberto/fechado durante o uso e unificando a abertura de detalhes entre Radar, Histórico e Kanban
+- workspace compartilhado do lead com campos visuais padronizados, destaque suave por etapa/score, timeline recente paginada, resumo compacto de acompanhamento, seções expansíveis para Resumo, Etiquetas, Notas e Atividades, `Resumo` fechado por padrão, ações rápidas no fim da coluna direita e abertura unificada de detalhes entre Radar, Histórico e Kanban
 - board kanban leve em `kanban.html`
 - modal de detalhes e edição direta do lead dentro do Kanban
 - movimentação de cards por drag and drop nativo entre colunas e por botões de estágio
@@ -301,6 +301,12 @@ O PIN único protege a API e os backups locais. Ele é necessário para recupera
 
 Se você restaurar um backup que contenha a chave da API, a tela introdutória vai pedir o mesmo PIN único para liberar o sistema imediatamente.
 
+Regra importante de migração entre cofres:
+
+- No fluxo atual de backup seguro, o PIN do arquivo exportado precisa coincidir com a senha da instalação que vai receber a importação.
+- Se o backup foi exportado com `1234` e a instalação de destino usa `4321`, a restauração segura não conclui diretamente por esse fluxo.
+- Quando os cofres usam senhas diferentes, alinhe a senha antes: troque a senha do cofre de origem antes de exportar ou troque a senha do cofre de destino antes de importar.
+
 ### Backup seguro por PIN único
 
 O projeto agora possui uma base de criptografia local com:
@@ -343,6 +349,8 @@ O modal de backup da página principal agora diferencia três fluxos:
 
 2. `Exportar Backup Seguro`
    Gera um snapshot JSON criptografado por PIN.
+
+   Importante: na restauração segura, o PIN desse arquivo precisa ser o mesmo PIN da instalação que vai receber a importação. Se origem e destino estiverem com senhas diferentes, ajuste uma delas antes da migração.
 
 3. `Ativar Auto Backup Seguro`
    Cria snapshots automáticos criptografados em `IndexedDB` para ajudar na recuperação se o `localStorage` for perdido.

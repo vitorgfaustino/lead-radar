@@ -88,7 +88,7 @@ See the GNU Affero General Public License for details.
                     <span class="material-icons text-purple-400">search</span>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400">Consultas</p>
+                    <span class="badge badge-purple text-xs">Consultas</span>
                     <p id="statSessions" class="text-xl font-bold text-white">0</p>
                 </div>
             </div>
@@ -97,7 +97,7 @@ See the GNU Affero General Public License for details.
                     <span class="material-icons text-blue-400">business</span>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400">Empresas únicas</p>
+                    <span class="badge badge-blue text-xs">Empresas únicas</span>
                     <p id="statUnique" class="text-xl font-bold text-white">0</p>
                 </div>
             </div>
@@ -106,7 +106,7 @@ See the GNU Affero General Public License for details.
                     <span class="material-icons text-green-400">check_circle</span>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400">Prospectadas</p>
+                    <span class="badge badge-green text-xs">Prospectadas</span>
                     <p id="statProspected" class="text-xl font-bold text-white">0</p>
                 </div>
             </div>
@@ -115,7 +115,7 @@ See the GNU Affero General Public License for details.
                     <span class="material-icons text-yellow-400">language</span>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400">Sem website</p>
+                    <span class="badge badge-yellow text-xs">Sem website</span>
                     <p id="statNoWebsite" class="text-xl font-bold text-white">0</p>
                 </div>
             </div>
@@ -761,6 +761,63 @@ See the GNU Affero General Public License for details.
                 
                 const statusLabels = { quente: 'Quente', morno: 'Morno', frio: 'Frio' };
                 const scoreLabels = { hot: 'Alto', warm: 'Médio', cold: 'Baixo' };
+                const footerYear = String(document.getElementById('footerYear')?.textContent || new Date().getFullYear());
+                const projectVersion = String(window.PROJECT_VERSION || document.getElementById('projectVersion')?.textContent || '1.0.0');
+                const projectLicense = 'AGPL-3.0';
+                const repositoryUrl = document.querySelector('footer a[href*="github.com"]')?.href || 'https://github.com/vitorgfaustino/lead-radar';
+                const leadManager = (() => {
+                    if (window.leadManager) {
+                        if (typeof window.leadManager.loadLeads === 'function') {
+                            window.leadManager.leads = window.leadManager.loadLeads();
+                        }
+                        return window.leadManager;
+                    }
+
+                    if (typeof window.LeadManager === 'function') {
+                        window.leadManager = new window.LeadManager();
+                        if (typeof window.leadManager.loadLeads === 'function') {
+                            window.leadManager.leads = window.leadManager.loadLeads();
+                        }
+                        return window.leadManager;
+                    }
+
+                    return null;
+                })();
+
+                const activeFilters = Object.entries(filters)
+                    .filter(([, value]) => value)
+                    .map(([key, value]) => {
+                        const labelMap = {
+                            search: 'Busca',
+                            status: 'Prospecção',
+                            website: 'Website',
+                            phone: 'Telefone',
+                            rating: 'Avaliação',
+                            leadStatus: 'Etapa',
+                            score: 'Score',
+                            sessionId: 'Consulta'
+                        };
+
+                        return `<span class="filter-chip"><strong>${esc(labelMap[key] || key)}:</strong> ${esc(value)}</span>`;
+                    });
+
+                const crmEnrichedCount = filtered.filter(company => {
+                    const lead = leadManager && typeof leadManager.getLead === 'function'
+                        ? leadManager.getLead(company.placeId)
+                        : null;
+
+                    return Boolean(
+                        lead && (
+                            lead.status
+                            || lead.ownerLabel
+                            || lead.nextActionAt
+                            || lead.lastContactAt
+                            || (Array.isArray(lead.tags) && lead.tags.length)
+                            || (Array.isArray(lead.notes) && lead.notes.length)
+                            || (Array.isArray(lead.activities) && lead.activities.length)
+                        )
+                    );
+                }).length;
                 
                 // Criar conteúdo HTML para PDF
                 let htmlContent = `
@@ -770,89 +827,446 @@ See the GNU Affero General Public License for details.
                         <meta charset="UTF-8">
                         <title>Relatório de Empresas - LeadRadar</title>
                         <style>
+                            :root {
+                                --report-bg: #eef4fb;
+                                --report-surface: #ffffff;
+                                --report-surface-soft: #f7fbff;
+                                --report-ink: #10233a;
+                                --report-muted: #5b6f84;
+                                --report-line: #d9e4ef;
+                                --report-brand: #123b63;
+                                --report-brand-strong: #0b2742;
+                                --report-brand-soft: #e6f0fa;
+                                --report-accent: #2d7bc8;
+                                --report-success: #0f8b6d;
+                                --report-success-soft: #d8f3e8;
+                                --report-warning: #b7791f;
+                                --report-warning-soft: #fff1cf;
+                                --report-danger: #b42318;
+                                --report-danger-soft: #fde7e5;
+                            }
                             * { margin: 0; padding: 0; box-sizing: border-box; }
-                            body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-                            .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #8b5cf6; }
-                            .header h1 { color: #8b5cf6; font-size: 24px; margin-bottom: 5px; }
-                            .header p { color: #666; font-size: 12px; }
-                            .summary { background: #f3f4f6; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-                            .summary h2 { font-size: 14px; color: #374151; margin-bottom: 10px; }
-                            .summary-grid { display: flex; gap: 20px; flex-wrap: wrap; }
-                            .summary-item { font-size: 12px; }
-                            .summary-item strong { color: #8b5cf6; }
-                            table { width: 100%; border-collapse: collapse; font-size: 10px; }
-                            th { background: #8b5cf6; color: white; padding: 8px 5px; text-align: left; font-weight: bold; }
-                            td { padding: 6px 5px; border-bottom: 1px solid #e5e7eb; }
-                            tr:nth-child(even) { background: #f9fafb; }
-                            tr:hover { background: #f3f4f6; }
-                            .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
-                            .badge-hot { background: #fee2e2; color: #dc2626; }
-                            .badge-warm { background: #fef3c7; color: #d97706; }
-                            .badge-cold { background: #dbeafe; color: #2563eb; }
-                            .badge-prospected { background: #d1fae5; color: #059669; }
-                            .badge-no-web { background: #fef3c7; color: #d97706; }
-                            .footer { margin-top: 20px; text-align: center; font-size: 10px; color: #9ca3af; }
+                            @page { size: A4; margin: 14mm; }
+                            body {
+                                font-family: "Segoe UI", Arial, sans-serif;
+                                background: var(--report-bg);
+                                color: var(--report-ink);
+                                padding: 24px;
+                                -webkit-print-color-adjust: exact;
+                                print-color-adjust: exact;
+                            }
+                            a { color: var(--report-accent); text-decoration: none; }
+                            .report-shell { max-width: 1120px; margin: 0 auto; }
+                            .report-header {
+                                background: linear-gradient(135deg, var(--report-brand-strong), var(--report-brand));
+                                color: #fff;
+                                border-radius: 24px;
+                                padding: 26px 30px;
+                                box-shadow: 0 18px 40px rgba(11, 39, 66, 0.22);
+                            }
+                            .report-kicker {
+                                display: inline-block;
+                                padding: 6px 12px;
+                                border-radius: 999px;
+                                background: rgba(255,255,255,0.14);
+                                font-size: 11px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.16em;
+                                margin-bottom: 14px;
+                            }
+                            .report-header h1 { font-size: 30px; line-height: 1.1; margin-bottom: 8px; }
+                            .report-header p { font-size: 13px; color: rgba(255,255,255,0.82); }
+                            .metrics-grid {
+                                display: grid;
+                                grid-template-columns: repeat(4, minmax(0, 1fr));
+                                gap: 12px;
+                                margin: 18px 0;
+                            }
+                            .metric-card {
+                                background: var(--report-surface);
+                                border: 1px solid var(--report-line);
+                                border-top: 4px solid var(--report-brand);
+                                border-radius: 20px;
+                                padding: 16px 18px;
+                                box-shadow: 0 14px 30px rgba(16, 35, 58, 0.08);
+                            }
+                            .metric-card span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--report-muted); }
+                            .metric-card strong { display: block; margin-top: 8px; font-size: 24px; color: var(--report-brand-strong); }
+                            .report-panel {
+                                background: var(--report-surface);
+                                border: 1px solid var(--report-line);
+                                border-radius: 22px;
+                                padding: 18px 20px;
+                                box-shadow: 0 14px 30px rgba(16, 35, 58, 0.06);
+                                margin-bottom: 16px;
+                            }
+                            .report-panel h2 {
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.16em;
+                                color: var(--report-brand);
+                                margin-bottom: 12px;
+                            }
+                            .filter-chip-list, .badge-list {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 8px;
+                            }
+                            .filter-chip, .badge {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                                padding: 6px 10px;
+                                border-radius: 999px;
+                                font-size: 11px;
+                                line-height: 1.35;
+                                border: 1px solid transparent;
+                            }
+                            .filter-chip {
+                                background: var(--report-brand-soft);
+                                color: var(--report-brand);
+                                border-color: #c9dcef;
+                            }
+                            .badge { background: #edf4fb; color: var(--report-brand); border-color: #d4e1ee; }
+                            .badge--success { background: var(--report-success-soft); color: var(--report-success); border-color: #bce7d5; }
+                            .badge--warning { background: var(--report-warning-soft); color: var(--report-warning); border-color: #f2dfae; }
+                            .badge--danger { background: var(--report-danger-soft); color: var(--report-danger); border-color: #f2c9c3; }
+                            .badge--neutral { background: #eef2f7; color: #425466; border-color: #dbe4ee; }
+                            .leads-grid { display: grid; gap: 16px; }
+                            .lead-card {
+                                background: var(--report-surface);
+                                border: 1px solid var(--report-line);
+                                border-radius: 24px;
+                                padding: 20px 22px;
+                                box-shadow: 0 16px 34px rgba(16, 35, 58, 0.07);
+                                page-break-inside: avoid;
+                                break-inside: avoid;
+                            }
+                            .lead-card-header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-start;
+                                gap: 18px;
+                                margin-bottom: 16px;
+                            }
+                            .lead-origin {
+                                font-size: 11px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.14em;
+                                color: var(--report-accent);
+                                margin-bottom: 8px;
+                            }
+                            .lead-title {
+                                font-size: 22px;
+                                line-height: 1.15;
+                                color: var(--report-brand-strong);
+                                margin-bottom: 6px;
+                            }
+                            .lead-address { color: var(--report-muted); font-size: 13px; line-height: 1.5; }
+                            .lead-meta-grid, .lead-crm-grid, .lead-bottom-grid {
+                                display: grid;
+                                grid-template-columns: repeat(2, minmax(0, 1fr));
+                                gap: 12px;
+                            }
+                            .lead-meta-grid { margin-bottom: 14px; }
+                            .lead-card-block {
+                                background: var(--report-surface-soft);
+                                border: 1px solid var(--report-line);
+                                border-radius: 16px;
+                                padding: 12px 14px;
+                            }
+                            .lead-card-block span {
+                                display: block;
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.14em;
+                                color: var(--report-muted);
+                                margin-bottom: 6px;
+                            }
+                            .lead-card-block strong, .lead-card-block a {
+                                font-size: 13px;
+                                line-height: 1.45;
+                                color: var(--report-ink);
+                                word-break: break-word;
+                            }
+                            .section-title {
+                                font-size: 12px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.16em;
+                                color: var(--report-brand);
+                                margin: 14px 0 10px;
+                            }
+                            .note-card, .activity-card {
+                                background: #fff;
+                                border: 1px solid var(--report-line);
+                                border-radius: 14px;
+                                padding: 10px 12px;
+                                margin-bottom: 8px;
+                            }
+                            .note-card p, .activity-card p {
+                                font-size: 12px;
+                                line-height: 1.55;
+                                color: var(--report-ink);
+                                white-space: pre-wrap;
+                            }
+                            .note-card span, .activity-card span {
+                                display: block;
+                                margin-top: 8px;
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.12em;
+                                color: var(--report-muted);
+                            }
+                            .empty-copy { font-size: 12px; color: var(--report-muted); }
+                            .system-footer {
+                                margin-top: 18px;
+                                background: linear-gradient(135deg, var(--report-brand-strong), var(--report-brand));
+                                color: #fff;
+                                border-radius: 22px;
+                                padding: 18px 20px;
+                            }
+                            .system-footer h2 {
+                                font-size: 13px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.16em;
+                                margin-bottom: 12px;
+                                color: rgba(255,255,255,0.84);
+                            }
+                            .system-footer-grid {
+                                display: grid;
+                                grid-template-columns: repeat(4, minmax(0, 1fr));
+                                gap: 12px;
+                            }
+                            .system-footer-item {
+                                background: rgba(255,255,255,0.08);
+                                border: 1px solid rgba(255,255,255,0.14);
+                                border-radius: 16px;
+                                padding: 12px 14px;
+                            }
+                            .system-footer-item span {
+                                display: block;
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.12em;
+                                color: rgba(255,255,255,0.72);
+                                margin-bottom: 6px;
+                            }
+                            .system-footer-item strong, .system-footer-item a {
+                                color: #fff;
+                                font-size: 13px;
+                                line-height: 1.45;
+                                word-break: break-word;
+                            }
+                            @media (max-width: 900px) {
+                                .metrics-grid,
+                                .lead-meta-grid,
+                                .lead-crm-grid,
+                                .lead-bottom-grid,
+                                .system-footer-grid {
+                                    grid-template-columns: 1fr 1fr;
+                                }
+                            }
+                            @media (max-width: 640px) {
+                                body { padding: 12px; }
+                                .report-header,
+                                .report-panel,
+                                .lead-card,
+                                .system-footer { padding: 16px; }
+                                .lead-card-header,
+                                .metrics-grid,
+                                .lead-meta-grid,
+                                .lead-crm-grid,
+                                .lead-bottom-grid,
+                                .system-footer-grid {
+                                    grid-template-columns: 1fr;
+                                }
+                            }
+                            @media print {
+                                body { padding: 0; background: #fff; }
+                                .report-shell { max-width: none; }
+                                .metric-card,
+                                .report-panel,
+                                .lead-card,
+                                .system-footer { box-shadow: none; }
+                            }
                         </style>
                     </head>
                     <body>
-                        <div class="header">
-                            <h1>📊 Relatório de Empresas</h1>
-                            <p>LeadRadar - Extraído em ${new Date().toLocaleString('pt-BR')}</p>
-                        </div>
-                        <div class="summary">
-                            <h2>Resumo</h2>
-                            <div class="summary-grid">
-                                <div class="summary-item"><strong>Total:</strong> ${filtered.length} empresas</div>
-                                <div class="summary-item"><strong>Prospectadas:</strong> ${filtered.filter(c => c.isProspected).length}</div>
-                                <div class="summary-item"><strong>Com Website:</strong> ${filtered.filter(c => c.website && c.website !== 'Não disponível').length}</div>
-                                <div class="summary-item"><strong>Com Telefone:</strong> ${filtered.filter(c => c.telefone && c.telefone !== 'Não disponível').length}</div>
-                            </div>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Empresa</th>
-                                    <th>Endereço</th>
-                                    <th>Telefone</th>
-                                    <th>Avaliação</th>
-                                    <th>Status</th>
-                                    <th>Score</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="report-shell">
+                            <section class="report-header">
+                                <span class="report-kicker">Exportação do histórico</span>
+                                <h1>Relatório de Empresas</h1>
+                                <p>LeadRadar · Base filtrada do Histórico com dados locais do CRM · Extraído em ${esc(new Date().toLocaleString('pt-BR'))}</p>
+                            </section>
+
+                            <section class="metrics-grid">
+                                <article class="metric-card">
+                                    <span>Total de empresas</span>
+                                    <strong>${filtered.length}</strong>
+                                </article>
+                                <article class="metric-card">
+                                    <span>Prospectadas</span>
+                                    <strong>${filtered.filter(c => c.isProspected).length}</strong>
+                                </article>
+                                <article class="metric-card">
+                                    <span>Com website</span>
+                                    <strong>${filtered.filter(c => c.website && c.website !== 'Não disponível').length}</strong>
+                                </article>
+                                <article class="metric-card">
+                                    <span>Com CRM preenchido</span>
+                                    <strong>${crmEnrichedCount}</strong>
+                                </article>
+                            </section>
+
+                            <section class="report-panel">
+                                <h2>Escopo da exportação</h2>
+                                <div class="filter-chip-list">
+                                    ${activeFilters.length ? activeFilters.join('') : '<span class="filter-chip"><strong>Filtro:</strong> nenhum filtro aplicado</span>'}
+                                </div>
+                            </section>
+
+                            <section class="leads-grid">
                 `;
                 
                 filtered.forEach(c => {
-                    const lm = window.leadManager;
-                    const lead = lm ? lm.getLead(c.placeId) : null;
+                    const lead = leadManager && typeof leadManager.getLead === 'function'
+                        ? leadManager.getLead(c.placeId)
+                        : null;
                     const score = window.LeadScoreService ? window.LeadScoreService.getScore(c.placeId) : null;
-                    const hasWebsite = c.website && c.website !== 'Não disponível';
-                    
-                    let statusBadges = [];
-                    if (c.isProspected) statusBadges.push('<span class="badge badge-prospected">✅ Prospectado</span>');
-                    if (!hasWebsite) statusBadges.push('<span class="badge badge-no-web">🚫 Sem Web</span>');
-                    if (lead && lead.status) statusBadges.push(`<span class="badge badge-${lead.status === 'quente' ? 'hot' : lead.status === 'morno' ? 'warm' : 'cold'}">${statusLabels[lead.status]}</span>`);
-                    
-                    let scoreBadge = '';
-                    if (score) scoreBadge = `<span class="badge badge-${score.status === 'hot' ? 'hot' : score.status === 'warm' ? 'warm' : 'cold'}">${scoreLabels[score.status]} (${score.score}pts)</span>`;
-                    
+                    const websiteHref = safeExternalUrl(c.website || '');
+                    const manualStatus = lead && lead.status ? statusLabels[lead.status] || lead.status : 'Sem status';
+                    const scoreText = score ? `${scoreLabels[score.status] || score.status} (${score.score} pts)` : 'Sem score';
+                    const tags = Array.isArray(lead && lead.tags) ? lead.tags.filter(Boolean) : [];
+                    const notes = Array.isArray(lead && lead.notes)
+                        ? [...lead.notes].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+                        : [];
+                    const activities = Array.isArray(lead && lead.activities)
+                        ? [...lead.activities].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+                        : [];
+
+                    const companyBadges = [];
+                    if (c.isProspected) companyBadges.push('<span class="badge badge--success">Prospectado</span>');
+                    if (!websiteHref) companyBadges.push('<span class="badge badge--warning">Sem website</span>');
+                    if (lead && lead.status) companyBadges.push(`<span class="badge badge--neutral">Etapa: ${esc(manualStatus)}</span>`);
+                    if (score) companyBadges.push(`<span class="badge badge--neutral">Score: ${esc(scoreText)}</span>`);
+
+                    const notesHtml = notes.length
+                        ? notes.slice(0, 2).map(note => `
+                            <article class="note-card">
+                                <p>${esc(note.text || '')}</p>
+                                <span>${esc(fmtDate(note.date))}</span>
+                            </article>
+                        `).join('')
+                        : '<p class="empty-copy">Sem notas registradas.</p>';
+
+                    const activitiesHtml = activities.length
+                        ? activities.slice(0, 3).map(activity => `
+                            <article class="activity-card">
+                                <p>${esc(activity.description || 'Atividade registrada')}</p>
+                                <span>${esc(fmtDate(activity.date))}</span>
+                            </article>
+                        `).join('')
+                        : '<p class="empty-copy">Sem atividades registradas.</p>';
+
                     htmlContent += `
-                        <tr>
-                            <td><strong>${c.nome || '-'}</strong></td>
-                            <td>${c.endereco || '-'}</td>
-                            <td>${c.telefone || '-'}</td>
-                            <td>${c.avaliacao || '-'} ${c.totalAvaliacoes ? `(${c.totalAvaliacoes})` : ''}</td>
-                            <td>${statusBadges.join(' ')}</td>
-                            <td>${scoreBadge}</td>
-                        </tr>
+                        <article class="lead-card">
+                            <div class="lead-card-header">
+                                <div>
+                                    <p class="lead-origin">${esc(c.sessionTerm || 'Histórico local')} · ${esc(c.sessionLocation || 'Origem não informada')}</p>
+                                    <h2 class="lead-title">${esc(c.nome || '-')}</h2>
+                                    <p class="lead-address">${esc(c.endereco || 'Endereço não informado')} · ${esc(fmtDate(c.sessionDate))}</p>
+                                </div>
+                                <div class="badge-list">
+                                    ${companyBadges.length ? companyBadges.join('') : '<span class="badge badge--neutral">Sem marcadores adicionais</span>'}
+                                </div>
+                            </div>
+                            <div class="lead-meta-grid">
+                                <div class="lead-card-block">
+                                    <span>Telefone</span>
+                                    <strong>${esc(c.telefone || 'Não disponível')}</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Website</span>
+                                    ${websiteHref ? `<a href="${esc(websiteHref)}" target="_blank" rel="noopener noreferrer">${esc(c.website)}</a>` : '<strong>Não disponível</strong>'}
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Avaliação</span>
+                                    <strong>${esc(c.avaliacao || 'Sem nota')} · ${esc(c.totalAvaliacoes || 0)} avaliações</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Place ID</span>
+                                    <strong>${esc(c.placeId || 'Não informado')}</strong>
+                                </div>
+                            </div>
+
+                            <h3 class="section-title">Campos do CRM</h3>
+                            <div class="lead-crm-grid">
+                                <div class="lead-card-block">
+                                    <span>Etapa do lead</span>
+                                    <strong>${esc(manualStatus)}</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Responsável</span>
+                                    <strong>${esc((lead && lead.ownerLabel) || 'Sem responsável')}</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Próximo passo</span>
+                                    <strong>${esc(lead && lead.nextActionAt ? fmtDate(lead.nextActionAt) : 'Não agendado')}</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Último contato</span>
+                                    <strong>${esc(lead && lead.lastContactAt ? fmtDate(lead.lastContactAt) : 'Sem registro')}</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Score da ficha</span>
+                                    <strong>${esc(scoreText)}</strong>
+                                </div>
+                                <div class="lead-card-block">
+                                    <span>Etiquetas</span>
+                                    <div class="badge-list">
+                                        ${tags.length ? tags.map(tag => `<span class="badge badge--neutral">#${esc(tag)}</span>`).join('') : '<span class="empty-copy">Sem etiquetas</span>'}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="lead-bottom-grid">
+                                <div>
+                                    <h3 class="section-title">Notas do CRM</h3>
+                                    ${notesHtml}
+                                </div>
+                                <div>
+                                    <h3 class="section-title">Atividades recentes</h3>
+                                    ${activitiesHtml}
+                                </div>
+                            </div>
+                        </article>
                     `;
                 });
                 
                 htmlContent += `
-                            </tbody>
-                        </table>
-                        <div class="footer">
-                            <p>Gerado por LeadRadar</p>
+                            </section>
+
+                            <section class="system-footer">
+                                <h2>Dados do sistema</h2>
+                                <div class="system-footer-grid">
+                                    <div class="system-footer-item">
+                                        <span>Ano</span>
+                                        <strong>${esc(footerYear)}</strong>
+                                    </div>
+                                    <div class="system-footer-item">
+                                        <span>Versão</span>
+                                        <strong>${esc(projectVersion)}</strong>
+                                    </div>
+                                    <div class="system-footer-item">
+                                        <span>Licença</span>
+                                        <strong>${esc(projectLicense)}</strong>
+                                    </div>
+                                    <div class="system-footer-item">
+                                        <span>Respositório</span>
+                                        <a href="${esc(repositoryUrl)}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </body>
                     </html>
@@ -869,8 +1283,8 @@ See the GNU Affero General Public License for details.
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 
-                toast(`PDF exportado com ${filtered.length} empresas! (Salve como PDF no navegador)`, 'success');
-                exportDropdownMenu.classList.add('hidden');
+                toast(`Relatório preparado com ${filtered.length} empresas e dados do CRM. Salve como PDF no navegador.`, 'success');
+                closeExportDropdown();
             });
 
             // Limpar histórico

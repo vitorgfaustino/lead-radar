@@ -1626,3 +1626,14 @@ body[data-page-view="historico"] .history-hero + .grid.grid-cols-2.sm\:grid-cols
     flex-direction: column;
     gap: 0.12rem;
 }
+
+body[data-page-view="historico"] .history-hero {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+body[data-page-view="historico"] #exportDropdownContainer {
+    position: relative;
+    z-index: 30;
+}

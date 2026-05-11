@@ -814,6 +814,10 @@ See the GNU Affero General Public License for details.
                             <p>Exporte sua base antes de mudanças maiores, principalmente se você trabalha com muitos leads no histórico ou no Kanban.</p>
                         </div>
                         <div class="help-mini-card">
+                            <strong>Mesmo PIN para importar</strong>
+                            <p>No fluxo atual de backup seguro, a senha do arquivo exportado precisa coincidir com a senha da instalação que vai receber a importação.</p>
+                        </div>
+                        <div class="help-mini-card">
                             <strong>Auto backup</strong>
                             <p>Quando disponível no navegador, ele ajuda a recuperar a base caso o armazenamento principal se perca.</p>
                         </div>
@@ -835,6 +839,13 @@ See the GNU Affero General Public License for details.
                             <div>
                                 <strong>Quando exportar a base</strong>
                                 <p>Antes de limpar histórico, antes de importar outro backup e sempre que encerrar uma rodada importante de prospecção.</p>
+                            </div>
+                        </div>
+                        <div class="help-list-item">
+                            <span class="material-icons">lock_reset</span>
+                            <div>
+                                <strong>Migração entre cofres com senhas diferentes</strong>
+                                <p>Se o backup seguro foi exportado com senha `1234` e o cofre que vai receber usa `4321`, o fluxo atual não conclui a importação segura diretamente. Antes da migração, deixe os dois lados com a mesma senha: altere a senha da origem antes de exportar ou altere a senha do cofre de destino antes de importar.</p>
                             </div>
                         </div>
                     </div>

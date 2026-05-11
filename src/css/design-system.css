@@ -720,6 +720,17 @@ textarea:focus {
     padding-right: 0.9rem !important;
     line-height: 1.2;
     appearance: auto;
+    color-scheme: dark;
+}
+
+#globalLeadModal input.lead-workspace-field--datetime::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.45);
+    opacity: 0.92;
+    cursor: pointer;
+}
+
+#globalLeadModal input.lead-workspace-field--datetime::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
 }
 
 .lead-workspace-textarea {

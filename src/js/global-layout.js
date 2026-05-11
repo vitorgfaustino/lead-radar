@@ -244,6 +244,15 @@
         `);
     }
 
+    function bindApiAlertRefresh() {
+        window.addEventListener('leadradar:api-state-changed', renderApiAlert);
+        window.addEventListener('storage', event => {
+            if (event.key === 'googlePlacesApiKey' || event.key === 'googlePlacesApiKeyUnlocked') {
+                renderApiAlert();
+            }
+        });
+    }
+
     function renderGlobalFooter() {
         const anchor = document.querySelector('[data-global-footer]');
         if (!anchor) {
@@ -296,6 +305,7 @@
     renderGlobalFooter();
     updateProjectMetadata();
     renderApiAlert();
+    bindApiAlertRefresh();
 
     document.addEventListener('DOMContentLoaded', () => {
         updateProjectMetadata();

@@ -26,7 +26,7 @@
     };
 
     const DEFAULT_DISCLOSURE_STATE = {
-        summary: true,
+        summary: false,
         activities: false,
         tags: false,
         notes: false
@@ -298,11 +298,11 @@
                 <div class="lead-workspace-body min-h-0 flex-1 overflow-y-scroll px-6 py-6">
                     <div class="lead-workspace-grid">
                         <section class="lead-workspace-column space-y-4">
-                            <details id="globalLeadSummaryDisclosure" class="lead-workspace-disclosure lead-workspace-disclosure--open" open>
+                            <details id="globalLeadSummaryDisclosure" class="lead-workspace-disclosure">
                                 <summary class="lead-workspace-disclosure-summary">
                                     <div>
                                         <h4 class="lead-workspace-section-title">Resumo</h4>
-                                        <p class="lead-workspace-section-copy">Telefone, website, avaliação e score em um bloco mais direto.</p>
+                                        <p class="lead-workspace-section-copy">Telefone, website, categoria e avaliação em um bloco mais direto.</p>
                                     </div>
                                     <span class="material-icons lead-workspace-disclosure-icon" aria-hidden="true">expand_more</span>
                                 </summary>
@@ -353,28 +353,6 @@
                                         <span class="lead-workspace-label">Último contato realizado</span>
                                         <input id="globalLeadLastContactInput" type="datetime-local" class="lead-workspace-field lead-workspace-field--datetime">
                                     </label>
-                                </div>
-                            </div>
-                            <div class="lead-workspace-section">
-                                <div class="lead-workspace-section-title-row">
-                                    <div>
-                                        <h4 class="lead-workspace-section-title">Ações rápidas</h4>
-                                        <p class="lead-workspace-section-copy">Atalhos operacionais para seguir com o contato sem sair do lead.</p>
-                                    </div>
-                                </div>
-                                <div class="lead-workspace-quick-actions">
-                                    <button id="globalLeadWhatsappBtn" class="lead-workspace-quick-btn" type="button">
-                                        <span class="material-icons" style="font-size:18px">chat</span>
-                                        WhatsApp
-                                    </button>
-                                    <button id="globalLeadCopyBtn" class="lead-workspace-quick-btn" type="button">
-                                        <span class="material-icons" style="font-size:18px">content_copy</span>
-                                        Copiar ficha
-                                    </button>
-                                    <button id="globalLeadEmailBtn" class="lead-workspace-quick-btn" type="button">
-                                        <span class="material-icons" style="font-size:18px">mail</span>
-                                        Email
-                                    </button>
                                 </div>
                             </div>
                         </section>
@@ -432,6 +410,28 @@
                                     <div id="globalLeadNotesList" class="lead-workspace-list lead-workspace-list--stack lead-workspace-disclosure-content-gap"></div>
                                 </div>
                             </details>
+                            <div class="lead-workspace-section">
+                                <div class="lead-workspace-section-title-row">
+                                    <div>
+                                        <h4 class="lead-workspace-section-title">Ações rápidas</h4>
+                                        <p class="lead-workspace-section-copy">Atalhos operacionais para seguir com o contato sem sair do lead.</p>
+                                    </div>
+                                </div>
+                                <div class="lead-workspace-quick-actions">
+                                    <button id="globalLeadWhatsappBtn" class="lead-workspace-quick-btn" type="button">
+                                        <span class="material-icons" style="font-size:18px">chat</span>
+                                        WhatsApp
+                                    </button>
+                                    <button id="globalLeadCopyBtn" class="lead-workspace-quick-btn" type="button">
+                                        <span class="material-icons" style="font-size:18px">content_copy</span>
+                                        Copiar ficha
+                                    </button>
+                                    <button id="globalLeadEmailBtn" class="lead-workspace-quick-btn" type="button">
+                                        <span class="material-icons" style="font-size:18px">mail</span>
+                                        Email
+                                    </button>
+                                </div>
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -566,14 +566,11 @@
     function renderSummary(company, lead, elements) {
         const website = safeUrl(company.website);
         const googleFichaUrl = buildGoogleFichaUrl(company);
-        const score = getLeadScore(company.placeId || '');
-        const scoreMeta = score ? getScorePresentation(score.status) : null;
         const summaryHtml = createInfoCard('Resumo', [
             { label: 'Telefone', value: esc(company.telefone || 'Não disponível'), icon: 'call', tone: 'info' },
             { label: 'Categoria', value: esc(company.categoria || 'Não informada'), icon: 'sell', tone: 'violet' },
             { label: 'Website', value: website ? `<a class="text-cyan-300 hover:underline break-all" href="${esc(website)}" target="_blank" rel="noopener noreferrer">${esc(company.website)}</a>` : 'Não disponível', icon: 'language', tone: website ? 'success' : 'neutral' },
-            { label: 'Avaliação', value: renderInlineHighlight(`${company.avaliacao || 'Sem nota'} · ${company.totalAvaliacoes || 0} avaliações`, 'star', 'warm'), icon: 'star_rate', tone: 'warm' },
-            { label: 'Score da ficha', value: score ? renderInlineHighlight(`${scoreMeta.label} · ${score.score} pts`, scoreMeta.icon, scoreMeta.tone) : 'Score ainda não calculado', icon: 'query_stats', tone: scoreMeta ? scoreMeta.tone : 'neutral' }
+            { label: 'Avaliação', value: renderInlineHighlight(`${company.avaliacao || 'Sem nota'} · ${company.totalAvaliacoes || 0} avaliações`, 'star', 'warm'), icon: 'star_rate', tone: 'warm' }
         ]);
 
         elements.summary.innerHTML = summaryHtml;
