@@ -52,33 +52,35 @@ Nunca inclua segredos, tokens, `API_KEY`, valores reais de `TEAM_DOMAIN`, `POLIC
 ---
 
 Versão 1.0.0
-Criado por Vitor Faustino - vitorfaustino.com.br# Contributing
+Criado por Vitor Faustino - vitorfaustino.com.br
 
-Este projeto e licenciado sob AGPL-3.0. Ao contribuir, voce concorda que suas mudancas podem ser distribuidas sob os mesmos termos.
+## Contributing
+
+Este projeto é licenciado sob AGPL-3.0. Ao contribuir, você concorda que suas mudanças podem ser distribuídas sob os mesmos termos.
 
 ## Regras do projeto
 
-- O sistema precisa continuar 100% estatico e client-side only.
-- Nao adicione backend, pipeline de build obrigatorio, dependencias de servidor ou qualquer requisito que impeça abrir `index.html` diretamente.
-- Preserve exportacao e importacao em JSON para qualquer dado persistido novo.
-- Sempre atualize a documentacao quando a mudanca afetar persistencia, seguranca, backup, restore, navegador suportado ou comportamento visivel ao usuario.
-- Mantenha o cabeçalho AGPL de copyright e disclaimer no topo dos arquivos de codigo-fonte.
+- O sistema precisa continuar 100% estático e client-side only.
+- Não adicione backend, pipeline de build obrigatório, dependências de servidor ou qualquer requisito que impeça abrir `index.html` diretamente.
+- Preserve exportação e importação em JSON para qualquer dado persistido novo.
+- Sempre atualize a documentação quando a mudança afetar persistência, segurança, backup, restore, navegador suportado ou comportamento visível ao usuário.
+- Mantenha o cabeçalho AGPL de copyright e disclaimer no topo dos arquivos de código-fonte.
 
 ## Como contribuir
 
 1. Faça um fork ou branch de trabalho.
-2. Edite o codigo preservando a estrutura estaticamente executavel.
-3. Valide em `file://` e em um servidor estatico simples em `localhost`.
-4. Verifique se a alteracao nao quebra exportacao, importacao, backup seguro ou auto backup.
+2. Edite o código preservando a estrutura estaticamente executável.
+3. Valide em `file://` e em um servidor estático simples em `localhost`.
+4. Verifique se a alteração não quebra exportação, importação, backup seguro ou auto backup.
 5. Atualize README, CHANGELOG e demais docs afetados.
 
 ## Padrão de revisão
 
 - Mantenha mudanças pequenas e focadas.
 - Prefira APIs nativas do navegador.
-- Evite segredos no codigo-fonte e mantenha a chave da API restrita por `HTTP referrer` no Google Cloud Console.
-- Se alterar dados persistidos, confirme compatibilidade retroativa ou migracao segura.
+- Evite segredos no código-fonte e mantenha a chave da API restrita por `HTTP referrer` no Google Cloud Console.
+- Se alterar dados persistidos, confirme compatibilidade retroativa ou migração segura.
 
 ## Uso comercial
 
-O uso comercial e permitido sob AGPL-3.0. Se voce distribuir uma versao modificada ou a oferecer para uso por rede, precisa disponibilizar o codigo-fonte correspondente sob os termos da AGPL.
+O uso comercial é permitido sob AGPL-3.0. Se você distribuir uma versão modificada ou a oferecer para uso por rede, precisa disponibilizar o código-fonte correspondente sob os termos da AGPL.
