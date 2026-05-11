@@ -400,7 +400,6 @@ Isso explica por que alguns filtros aparentam "nao valer como regra" da extracao
     ├── css/
     └── js/
         ├── app.js
-        ├── premium-dashboard.js
         ├── export-import.js
         └── services/
             ├── ApiKeyService.js
