@@ -37,7 +37,7 @@
     ];
     const PAGE_META = {
         radar: {
-            title: 'Busca Empresas',
+            title: 'LeadRadar',
             mobileNote: 'Use o menu para navegar entre Radar, Histórico e Kanban. As configurações locais concentram API, ajuda, backup e recuperação.'
         },
         history: {

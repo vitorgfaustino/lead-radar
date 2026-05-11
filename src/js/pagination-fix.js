@@ -8,7 +8,7 @@
  */
 
 /**
- * Solução de paginação para o Busca Empresas
+ * Solução de paginação para o LeadRadar
  * Garante que os resultados sejam exibidos em páginas de 21 itens
  */
 

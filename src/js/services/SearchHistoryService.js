@@ -117,7 +117,7 @@ class SearchHistoryService {
     }
 
     /**
-     * Busca empresas em todas as sessões por termo
+    * LeadRadar: busca empresas em todas as sessões por termo
      * @param {string} query - Termo de busca
      * @returns {Array} Empresas encontradas com info da sessão
      */

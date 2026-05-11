@@ -1,4 +1,4 @@
-# Busca Empresas
+# LeadRadar
 
 Aplicacao web estatica para prospeccao de empresas com Google Places API, evoluindo para um CRM local-first sem backend.
 
@@ -37,7 +37,7 @@ Se voce encontrar um bug, tiver uma duvida ou quiser sugerir uma melhoria, abra 
 
 Pull Requests abertos por terceiros podem ser fechados automaticamente com uma mensagem explicativa.
 
-O Busca Empresas roda inteiramente no navegador. O projeto foi desenhado para funcionar abrindo o arquivo `index.html` diretamente ou por um servidor estatico simples em `localhost`, sem `npm`, sem build step e sem infraestrutura externa propria.
+O LeadRadar roda inteiramente no navegador. O projeto foi desenhado para funcionar abrindo o arquivo `index.html` diretamente ou por um servidor estatico simples em `localhost`, sem `npm`, sem build step e sem infraestrutura externa propria.
 
 O bootstrap do LeadRadar agora fica centralizado em `src/js/app.js` e nos modulos carregados por `index.html`. A pagina principal deve permanecer como casca estatica de layout, modais e marcadores de DOM, evitando reintroduzir grandes blocos de runtime inline que dupliquem a logica dos modulos.
 

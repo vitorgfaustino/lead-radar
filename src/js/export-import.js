@@ -13,7 +13,7 @@
  */
 
 class StorageManager {
-    static APP_NAME = 'Busca Empresas';
+    static APP_NAME = 'LeadRadar';
     static SNAPSHOT_VERSION = '2.0.0';
     static MAX_IMPORT_SIZE_BYTES = 10 * 1024 * 1024;
     static INSTALLATION_MARKER_KEY = 'buscaEmpresasInstallationMarker';
@@ -428,7 +428,7 @@ class StorageManager {
         }
 
         if (snapshot.metadata.appName !== this.APP_NAME) {
-            throw new Error('Este arquivo nao pertence ao Busca Empresas');
+            throw new Error('Este arquivo nao pertence ao LeadRadar');
         }
 
         if (typeof snapshot.data !== 'object' || Array.isArray(snapshot.data)) {

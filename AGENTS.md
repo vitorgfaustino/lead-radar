@@ -1,6 +1,8 @@
 # Diretrizes para Agentes de IA e Desenvolvedores
 
-Este documento define as regras obrigatorias para qualquer manutencao, extensao, hardening ou evolucao do projeto Busca Empresas.
+Este documento define as regras obrigatorias para qualquer manutencao, extensao, hardening ou evolucao do projeto LeadRadar.
+
+Nome oficial do produto: LeadRadar. Nao volte a usar "Busca Empresas" em novos textos de interface, documentacao ou cabecalhos; mantenha apenas chaves legadas de armazenamento quando a migracao quebraria compatibilidade.
 
 ## 1. Regra de Ouro
 
